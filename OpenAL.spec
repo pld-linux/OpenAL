@@ -21,6 +21,7 @@ Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
 Source0:	%{name}-linuxonly-%{snap}.tar.bz2
+# Source0-md5:	5bf585b48b4f1544c22cd8a19362bb16
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch
 Patch2:		%{name}-info.patch

@@ -13,7 +13,7 @@
 %ifarch athlon
 %define		_with_mmx	1
 %endif
-%ifnarch i586 i686 athlon
+%ifnarch i586 i686 athlon ppc alpha sparc sparc64 powerpc
 %define		_with_mmx	0
 %endif
 Summary:	Open Audio Library

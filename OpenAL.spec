@@ -39,7 +39,7 @@ supported by a number of hardware vendors and developers.
 OpenAL, otwarta biblioteka d¼wiêku, to po³±czony wysi³ek w celu
 stworzenia otwartego, niezale¿nego od producentów, miedzyplatformowego
 interfejsu projektowania aplikacji w czê¶ci obs³ugi d¼wiêku.
-Biblioteka adresowana jest do twórców aplikacji i urzytkowników,
+Biblioteka adresowana jest do twórców aplikacji i u¿ytkowników,
 którzy wybieraj± przeno¶ne standardy, jak OpenGL, w grach i
 aplikacjach multimedialnych. OpenAL posiada ju¿ wsparcie wielu
 dostarczycieli sprzêtu i programistów.

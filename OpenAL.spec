@@ -14,17 +14,16 @@ Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
-Release:	1
+%define	snap	20030218
+Release:	1.%{snap}.1
 License:	LGPL
 Group:		Libraries
-Vendor:		Loki Entertainment Software - http://www.lokigames.com/
-# This is tarball taken directly form Mandrake Cooker .src.rpm
-Source0:	%{name}-linuxonly-20010805.tar.bz2
-# Those patches came from Mandrake Cooker (only changed names)
+# from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
+# (without all Win and Mac stuff and demos)
+Source0:	%{name}-linuxonly-%{snap}.tar.bz2
 Patch0:		%{name}-prefix.patch
-Patch1:		%{name}-build.patch
-Patch2:		%{name}-acfix.patch
-Patch3:		%{name}-info.patch
+Patch1:		%{name}-acfix.patch
+Patch2:		%{name}-info.patch
 URL:		http://www.openal.com/
 BuildRequires:	SDL-devel
 %{!?_without_alsa:BuildRequires:	alsa-lib-devel}
@@ -81,17 +80,15 @@ OpenAL static library.
 Biblioteka OpenAL do statycznego linkowania.
 
 %prep
-%setup -q -n tmp
+%setup -q -n openal
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
-%patch3 -p1
-cd openal
-%patch1 -p0
 
 echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4
 
 %build
-cd openal/linux
+cd linux
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
@@ -114,7 +111,7 @@ cd ../docs
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_infodir}
 
-cd openal/linux
+cd linux
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -134,12 +131,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc openal/linux/{CREDITS,ChangeLog,NOTES,TODO}
+%doc linux/{CREDITS,ChangeLog,NOTES,TODO}
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%doc openal/linux/doc/LOKI* %{!?_without_doc:openal/docs/oalspecs-full}
+%doc linux/doc/LOKI* %{!?_without_doc:docs/oalspecs-full}
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_includedir}/AL
 %{_infodir}/openal.info*

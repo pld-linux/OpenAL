@@ -1,5 +1,5 @@
---- tmp/openal/linux/doc/openal.texi.orig	Sat Jan 27 01:04:32 2001
-+++ tmp/openal/linux/doc/openal.texi	Fri Feb 14 22:01:25 2003
+--- openal/linux/doc/openal.texi.orig	Sat Jan 27 01:04:32 2001
++++ openal/linux/doc/openal.texi	Fri Feb 14 22:01:25 2003
 @@ -4,9 +4,9 @@
  
  @ifinfo

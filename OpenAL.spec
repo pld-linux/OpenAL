@@ -25,7 +25,7 @@ Source0:	%{name}-linuxonly-%{snap}.tar.bz2
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch
 Patch2:		%{name}-info.patch
-URL:		http://www.openal.com/
+URL:		http://opensource.creative.com/
 BuildRequires:	SDL-devel
 %{!?_without_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf
@@ -48,7 +48,7 @@ supported by a number of hardware vendors and developers.
 
 %description -l pl
 OpenAL, otwarta biblioteka d¼wiêku, to po³±czony wysi³ek w celu
-stworzenia otwartego, niezale¿nego od producentów, miedzyplatformowego
+stworzenia otwartego, niezale¿nego od producentów, miêdzyplatformowego
 interfejsu projektowania aplikacji w czê¶ci obs³ugi d¼wiêku.
 Biblioteka adresowana jest do twórców aplikacji i u¿ytkowników,
 którzy wybieraj± przeno¶ne standardy, jak OpenGL, w grach i

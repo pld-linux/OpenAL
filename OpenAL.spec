@@ -110,7 +110,7 @@ cd linux
 	--enable-vorbis \
 	--enable-smpeg \
 	--enable-capture \
-	--with-gcc=%{__cc}			    
+	--with-gcc=%{__cc}
 
 %{__make}
 

@@ -2,6 +2,7 @@
 # Conditional build:
 # _without_alsa		- without ALSA support
 # _without_doc		- don't build HTML documentation (from SGML source)
+# _without_esd		- without esd support
 # _with_mmx		- use MMX (won't run on non-MMX CPU)
 #
 # TODO:
@@ -20,7 +21,7 @@ Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
 %define	snap	20030806
-Release:	1.%{snap}.0.9
+Release:	1.%{snap}.0.10
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
@@ -36,6 +37,7 @@ BuildRequires:	SDL-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{!?_without_doc:BuildRequires:	docbook-utils}
+%{!?_without_esd:BuildRequires:	esound-devel}
 %{!?_without_doc:BuildRequires:	gnome-doc-tools}
 BuildRequires:	libvorbis-devel
 %{?_with_mmx:BuildRequires:	nasm}
@@ -103,6 +105,7 @@ cd linux
 	%{!?debug:--enable-optimization} \
 	%{?_with_mmx:--enable-arch-asm} \
 	%{!?_without_alsa:--enable-alsa} \
+	%{!?_without_esd:--enable-esd} \
 	--enable-sdl \
 	--enable-vorbis \
 	--enable-smpeg \

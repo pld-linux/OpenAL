@@ -18,7 +18,6 @@ BuildRequires:	libvorbis-devel
 BuildRequires:	smpeg-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
 
 %description
 OpenAL, the Open Audio Library, is a joint effort to create an open,

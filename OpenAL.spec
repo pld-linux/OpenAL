@@ -6,9 +6,7 @@
 # _with_mmx		- use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
 #
 # TODO:
-# - remove zip bcond?
-# - check %{name}-acfix.patch if it's still nedded, sorry
-#   for the inconvenience, I'll do it if I can...
+# - remove zip BR?
 #
 %ifarch athlon
 %define		_with_mmx	1
@@ -18,18 +16,16 @@ Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
-%define	snap	20030806
+%define	snap	20040416
 Release:	1.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
-Source0:	http://pb152.srem.sdi.tpnet.pl/pld/%{name}-linuxonly-%{snap}.tar.bz2
-# Source0-md5:	4a5202f6cba291ae0a9af59410bdda88
+Source0:	%{name}-linuxonly-%{snap}.tar.bz2
+# Source0-md5:	4f42f20484858452bfc30caa8976415d
 Patch0:		%{name}-prefix.patch
-Patch1:		%{name}-acfix.patch
-Patch2:		%{name}-info.patch
-Patch3:		%{name}-alsa_1_0.patch
+Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
 %{!?_without_alsa:BuildRequires:	alsa-lib-devel}
@@ -90,9 +86,7 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %prep
 %setup -q -n openal
 %patch0 -p1
-#%%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%patch1 -p1
 
 echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4
 

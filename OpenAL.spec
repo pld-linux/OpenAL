@@ -14,11 +14,6 @@
 %define		_with_mmx	1
 %endif
 
-%ifarch sparc
-%define		_without_alsa	1
-%endif
-
-
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
@@ -156,4 +151,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root)%{_libdir}/*.a
+%{_libdir}/*.a

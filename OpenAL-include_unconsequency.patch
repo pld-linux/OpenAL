@@ -1,0 +1,26 @@
+diff -Nru OpenAL/Makefile.in OpenAL-new/Makefile.in
+--- OpenAL/Makefile.in	Fri Nov 16 13:56:34 2001
++++ OpenAL-new/Makefile.in	Fri Nov 16 15:20:05 2001
+@@ -45,14 +45,14 @@
+ 	$(INSTALL) -m 755 src/libopenal.so.$(VERSION) $(DESTLIB)
+ 	$(LN_S) -f $(DESTLIB)/libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so.$(MAJOR_VERSION)
+ 	$(LN_S) -f $(DESTLIB)/libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so
+-	$(INSTALL) -m 444 ../include/AL/al.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/alc.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/alu.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/alut.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/altypes.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/alctypes.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/alutypes.h $(DESTINC)/AL
+-	$(INSTALL) -m 444 ../include/AL/aluttypes.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/al.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/alc.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/alu.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/alut.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/altypes.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/alctypes.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/alutypes.h $(DESTINC)/AL
++	$(INSTALL) -m 444 include/AL/aluttypes.h $(DESTINC)/AL
+ 	$(INSTALL) -m 444 include/AL/alext.h $(DESTINC)/AL
+ 	$(INSTALL) -m 444 include/AL/alexttypes.h $(DESTINC)/AL
+ 

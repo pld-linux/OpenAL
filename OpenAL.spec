@@ -9,7 +9,7 @@
 # TODO:
 # - remove zip BR?
 #
-%ifarch athlon
+%ifarch athlon pentium3 pentium4 amd64
 %define		with_mmx	1
 %endif
 

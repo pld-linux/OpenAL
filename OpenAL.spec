@@ -19,7 +19,7 @@ Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
 %define	snap	20030806
-Release:	1.%{snap}.0.10
+Release:	1.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal

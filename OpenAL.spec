@@ -4,6 +4,11 @@
 # _without_doc		- don't build HTML documentation (from SGML source)
 # _with_mmx		- use MMX (won't run on non-MMX CPU)
 #
+# TODO:
+# - remove zip bcond?
+# - check %{name}-acfix.patch if it's still nedded, sorry
+#   for the inconvenience, I'll do it if I can...
+#
 %ifarch athlon
 %define		_with_mmx	1
 %endif
@@ -14,14 +19,14 @@ Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
-%define	snap	20030218
-Release:	1.%{snap}.1
+%define	snap	20030806
+Release:	1.%{snap}.0.9
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
 Source0:	%{name}-linuxonly-%{snap}.tar.bz2
-# Source0-md5:	5bf585b48b4f1544c22cd8a19362bb16
+# Source0-md5:	4a5202f6cba291ae0a9af59410bdda88
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch
 Patch2:		%{name}-info.patch
@@ -36,6 +41,7 @@ BuildRequires:	libvorbis-devel
 %{?_with_mmx:BuildRequires:	nasm}
 BuildRequires:	smpeg-devel
 BuildRequires:	texinfo
+BuildRequires:	zip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,7 +89,7 @@ Biblioteka OpenAL do statycznego linkowania.
 %prep
 %setup -q -n openal
 %patch0 -p1
-%patch1 -p1
+#%%patch1 -p1
 %patch2 -p1
 
 echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4

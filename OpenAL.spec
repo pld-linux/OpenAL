@@ -10,11 +10,10 @@
 # - check %{name}-acfix.patch if it's still nedded, sorry
 #   for the inconvenience, I'll do it if I can...
 #
-%ifarch athlon
+%ifarch i586 i686 athlon
 %define		_with_mmx	1
-%endif
-%ifnarch i586 i686 athlon ppc alpha sparc sparc64 powerpc
-%define		_with_mmx	0
+%else
+%define         _with_mmx       0
 %endif
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku

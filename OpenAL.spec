@@ -2,7 +2,7 @@ Summary:	OpenAL - Open Audio Library
 Summary(pl):	OpenAL - Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
-Release:	2
+Release:	1
 License:	LGPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries

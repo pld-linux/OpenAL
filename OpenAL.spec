@@ -1,23 +1,24 @@
 #
 # Conditional build:
-# _without_alsa		- without ALSA support
-# _without_doc		- don't build HTML documentation (from SGML source)
-# _without_esd		- without esd support
-# _with_mmx		- use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
+%bcond_without	alsa	# without ALSA support
+%bcond_with	arts	# with aRts support
+%bcond_without	doc	# don't build HTML documentation (from SGML source)
+%bcond_without	esd	# without esd support
+%bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
 #
 # TODO:
 # - remove zip BR?
 #
 %ifarch athlon
-%define		_with_mmx	1
+%define		with_mmx	1
 %endif
 
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
-Version:	0.0.6
+Version:	0.0.7
 %define	snap	20040416
-Release:	1.%{snap}.1
+Release:	0.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
@@ -28,14 +29,15 @@ Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
-%{!?_without_alsa:BuildRequires:	alsa-lib-devel}
+%{?with_alsa:BuildRequires:	alsa-lib-devel}
+%{?with_arts:BuildRequires:	artsc-devel}
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{!?_without_doc:BuildRequires:	docbook-utils}
-%{!?_without_esd:BuildRequires:	esound-devel}
-%{!?_without_doc:BuildRequires:	gnome-doc-tools}
+%{?with_doc:BuildRequires:	docbook-utils}
+%{?with_esd:BuildRequires:	esound-devel}
+%{?with_doc:BuildRequires:	gnome-doc-tools}
 BuildRequires:	libvorbis-devel
-%{?_with_mmx:BuildRequires:	nasm}
+%{?with_mmx:BuildRequires:	nasm}
 BuildRequires:	smpeg-devel
 BuildRequires:	texinfo
 BuildRequires:	zip
@@ -62,7 +64,7 @@ dostarczycieli sprzêtu i programistów.
 Summary:	Headers for OpenAL
 Summary(pl):	Pliki nag³ówkowe do OpenAL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for OpenAL-based programs.
@@ -75,7 +77,7 @@ OpenAL.
 Summary:	OpenAL static library
 Summary(pl):	Statyczna biblioteka OpenAL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 OpenAL static library.
@@ -88,19 +90,20 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %patch0 -p1
 %patch1 -p1
 
-echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4
+echo 'AC_DEFUN([AC_HAS_MMX],[$%{?with_mmx:1}%{!?with_mmx:2}])' >> linux/acinclude.m4
 
 %build
 cd linux
-cp /usr/share/automake/config.sub .
+cp -f /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %configure \
 	%{!?debug:--enable-optimization} \
-	%{?_with_mmx:--enable-arch-asm} \
-	%{!?_without_alsa:--enable-alsa} \
-	%{!?_without_esd:--enable-esd} \
+	%{?with_mmx:--enable-arch-asm} \
+	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
+	%{?with_arts:--enable-arts} \
+	%{?with_esd:--enable-esd} \
 	--enable-sdl \
 	--enable-vorbis \
 	--enable-smpeg \
@@ -110,17 +113,16 @@ cp /usr/share/automake/config.sub .
 %{__make}
 
 cd ../docs
-%{!?_without_doc:%{__make} full-html}
+%{?with_doc:%{__make} full-html}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_infodir}
 
-cd linux
-%{__make} install \
+%{__make} -C linux install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install doc/openal.info $RPM_BUILD_ROOT%{_infodir}
+install linux/doc/openal.info $RPM_BUILD_ROOT%{_infodir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -141,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc linux/doc/LOKI* %{!?_without_doc:docs/oalspecs-full}
+%doc linux/doc/LOKI* %{?with_doc:docs/oalspecs-full}
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_includedir}/AL
 %{_infodir}/openal.info*

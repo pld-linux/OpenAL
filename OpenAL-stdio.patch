@@ -1,0 +1,13 @@
+diff -Nru OpenAL/src/arch/linux/lin_dsp.c OpenAL-new/src/arch/linux/lin_dsp.c
+--- OpenAL/src/arch/linux/lin_dsp.c	Fri Apr 13 00:35:48 2001
++++ OpenAL-new/src/arch/linux/lin_dsp.c	Fri Nov 16 15:05:29 2001
+@@ -54,7 +54,9 @@
+ 		     ALuint *channels);
+ 
+ 
++/* somebody was brainless! This is defined in stdio.h
+ extern const char *sys_errlist[];
++*/
+ 
+ /* convert the format channel from /dev/dsp to openal format */
+ static int LIN2ALFMT(int fmt, int channels) {

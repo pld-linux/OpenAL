@@ -1,0 +1,11 @@
+--- linux/src/arch/alsa/alsa.c	Fri Jan 26 19:04:33 2001
++++ linux/src/arch/alsa/alsa.c.build	Sun Aug  5 12:11:52 2001
+@@ -10,6 +10,8 @@
+ #define _SVID_SOURCE
+ #endif /* _SVID_SOURCE */
+ 
++#include <string.h> /*memset*/
++
+ #include "arch/interface/interface_sound.h"
+ #include "arch/alsa/alsa.h"
+ 

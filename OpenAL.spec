@@ -25,7 +25,7 @@ License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
-Source0:	%{name}-linuxonly-%{snap}.tar.bz2
+Source0:	http://pb152.srem.sdi.tpnet.pl/pld/%{name}-linuxonly-%{snap}.tar.bz2
 # Source0-md5:	4a5202f6cba291ae0a9af59410bdda88
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch

@@ -31,7 +31,7 @@ Source0:	http://pb152.srem.sdi.tpnet.pl/pld/%{name}-linuxonly-%{snap}.tar.bz2
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch
 Patch2:		%{name}-info.patch
-URL:		http://opensource.creative.com/
+URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
 %{!?_without_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf

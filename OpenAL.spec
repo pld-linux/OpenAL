@@ -25,7 +25,6 @@ BuildRequires:	libvorbis-devel
 BuildRequires:	smpeg-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define 	_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
 
@@ -86,14 +85,6 @@ cp -f AL/*.h include/AL/
 
 %build
 ./autogen.sh
-CFLAGS="%{rpmcflags} -I%{_includedir} \
-	-fexpensive-optimizations 	-funroll-all-loops \
-	-funroll-loops 			-fomit-frame-pointer \
-	-finline-functions 		-ffast-math "
-export CFLAGS
-
-LDFLAGS="-L%{_libdir}" ; export LDFLAGS
-
 ./configure \
 	--enable-prefix=%{_prefix} \
 	--enable-optimization \
@@ -103,18 +94,13 @@ LDFLAGS="-L%{_libdir}" ; export LDFLAGS
 	--enable-smpeg \
 	--enable-capture \
 	--with-gcc=%{__cc}
-
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install DESTDIR=$RPM_BUILD_ROOT/%{_prefix}
-
-gzip -9nf TODO NOTES ChangeLog CREDITS COPYING
-
-cd $RPM_BUILD_ROOT/%{_libdir}
-ln -sf libopenal.so.0.0.6 libopenal.so.0
-ln -sf libopenal.so.0.0.6 libopenal.so
+%{__make} install DESTDIR=$RPM_BUILD_ROOT%{_prefix}/
+ln -sf libopenal.so.0.0.6 $RPM_BUILD_ROOT%{_libdir}/libopenal.so
+gzip -9nf TODO NOTES ChangeLog CREDITS
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -125,11 +111,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.gz
-%{_libdir}/*so*
+%{_libdir}/*.so.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/AL/*
+%{_includedir}/AL
+%{_libdir}/*.so
 
 %files static
 %defattr(644,root,root,755)

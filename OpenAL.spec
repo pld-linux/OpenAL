@@ -37,21 +37,25 @@ OpenGL, for games and other multimedia applications. OpenAL is already
 supported by a number of hardware vendors and developers.
 
 %description -l pl
-OpenAL, otwarta bibliotela d¼wiêku, to po³±czony wysi³ek w celu
+OpenAL, otwarta biblioteka d¼wiêku, to po³±czony wysi³ek w celu
 stworzenia otwartego, niezale¿nego od producentów, miedzyplatformowego
 interfejsu projektowania aplikacji w czê¶ci obs³ugi d¼wiêku.
-Biblioteka adersowana jest do twórców aplikacji i urzytkowników,
-którzy wybieraj± przeno¶ne standardy, jak OpenGL, w grach i
-aplikacjach multimedialnych. OpenAL posiada ju¿ wsparcie wielu
-dostarczycieli sprzêtu i programistów.
-
+Biblioteka adresowana jest do twórców aplikacji i u¿ytkowników, którzy
+wybieraj± przeno¶ne standardy, jak OpenGL, w grach i aplikacjach
+multimedialnych. OpenAL posiada ju¿ wsparcie wielu dostarczycieli
+sprzêtu i programistów.
 
 %package devel
 Summary:	OpenAL development files
-Summary(pl):	Pakiet dla Programistów OpenAL
-Group:		Development/Building
-Group(de):	Entwicklung/Bauen
-Group(pl):	Programowanie/Budowanie
+Summary(pl):	Pakiet dla programistów OpenAL
+Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
+Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description devel
@@ -60,13 +64,17 @@ OpenAL header files.
 %description devel -l pl
 Pliki nag³ówkowe biblioteki OpenAL.
 
-
 %package static
 Summary:	OpenAL static library
 Summary(pl):	Statyczna biblioteka OpenAL
-Group:		Development/Building
-Group(de):	Entwicklung/Bauen
-Group(pl):	Programowanie/Budowanie
+Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
+Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description static
@@ -74,7 +82,6 @@ OpenAL static library.
 
 %description static -l pl
 Biblioteka OpenAL do statycznego linkowania.
-
 
 %prep
 %setup -q -n %{name} -a 1
@@ -111,12 +118,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.gz
-%{_libdir}/*.so.*
+%attr(755,root,root) %{_libdir}/*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/AL
-%{_libdir}/*.so
+%attr(755,root,root) %{_libdir}/*.so
 
 %files static
 %defattr(644,root,root,755)

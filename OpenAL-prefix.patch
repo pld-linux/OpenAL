@@ -1,0 +1,10 @@
+--- linux/Makefile.in	Fri Jan 26 19:04:32 2001
++++ linux/Makefile.in.works	Sun Aug  5 12:29:26 2001
+@@ -1,6 +1,6 @@
+ INSTALL=@INSTALL@
+ LN_S=@LN_S@
+-DESTDIR=@prefix@/
++DESTDIR=$(prefix)/
+ DESTINC=$(DESTDIR)include
+ DESTLIB=$(DESTDIR)lib
+ MAKE=@MAKE@

@@ -1,0 +1,48 @@
+diff -durN -x '*~' openal.orig/linux/src/arch/alsa/alsa.c openal/linux/src/arch/alsa/alsa.c
+--- openal.orig/linux/src/arch/alsa/alsa.c	2003-06-20 19:23:06.000000000 +0000
++++ openal/linux/src/arch/alsa/alsa.c	2004-12-29 10:56:25.000000000 +0000
+@@ -157,6 +157,7 @@
+ 	struct alsa_info *ai = handle;
+ 	snd_pcm_hw_params_t *setup;
+ 	snd_pcm_t *phandle = 0;
++	snd_pcm_uframes_t ufr;
+ 	int err, dir;
+ 
+ 	if( (ai == NULL) || (ai->handle == NULL) )
+@@ -215,8 +216,9 @@
+ 	err = snd_pcm_hw_params_set_channels(phandle, setup, ai->channels);
+ 	if(err < 0)
+ 	{
+-		err = snd_pcm_hw_params_get_channels(setup);
+-		if(err!= (int) (ai->channels)) {
++		unsigned int val;
++		err = snd_pcm_hw_params_get_channels(setup,&val);
++		if(err || val != (int) (ai->channels)) {
+ 			_alDebug(ALD_MAXIMUS, __FILE__, __LINE__,
+ 				 "set_write_alsa: could not set channels: %s",snd_strerror(err));
+ 
+@@ -226,7 +228,7 @@
+ 
+ 
+ 	/* sampling rate */
+-	err = snd_pcm_hw_params_set_rate_near(phandle, setup, ai->speed, NULL);
++	err = snd_pcm_hw_params_set_rate_near(phandle, setup, &ai->speed, NULL);
+ 	if(err < 0)
+ 	{
+ 		_alDebug(ALD_MAXIMUS, __FILE__, __LINE__,
+@@ -253,11 +255,13 @@
+ 		return AL_FALSE;
+         }
+ 
++	err=snd_pcm_hw_params_get_buffer_size(setup,&ufr);
+         _alDebug(ALD_MAXIMUS, __FILE__, __LINE__,
+-         "set_write_alsa (info): Buffersize = %i (%i)",snd_pcm_hw_params_get_buffer_size(setup), *bufsiz);
++         "set_write_alsa (info): Buffersize = %i (%i)",ufr, *bufsiz);
+ 
++	err=snd_pcm_hw_params_get_period_size(setup,&ufr,&dir);
+         _alDebug(ALD_MAXIMUS, __FILE__, __LINE__,
+-         "set_write_alsa (info): Periodsize = %i",snd_pcm_hw_params_get_period_size(setup, &dir));
++         "set_write_alsa (info): Periodsize = %i",ufr);
+ 
+ 	err = snd_pcm_hw_params(phandle, setup);
+ 	if(err < 0)

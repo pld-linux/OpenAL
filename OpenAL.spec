@@ -29,6 +29,7 @@ Source0:	http://pb152.srem.sdi.tpnet.pl/pld/%{name}-linuxonly-%{snap}.tar.bz2
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-acfix.patch
 Patch2:		%{name}-info.patch
+Patch3:		%{name}-alsa_1_0.patch
 URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
 %{!?_without_alsa:BuildRequires:	alsa-lib-devel}
@@ -91,11 +92,13 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %patch0 -p1
 #%%patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4
 
 %build
 cd linux
+cp /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}

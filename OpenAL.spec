@@ -89,7 +89,7 @@ Requires:	%{name}-devel = %{version}
 OpenAL static library.
 
 %description static -l pl
-Biblioteka OpenAL do statycznego linkowania.
+Biblioteka OpenAL do konsolidacji statycznej.
 
 %prep
 %setup -q -n openal

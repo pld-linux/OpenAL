@@ -5,26 +5,28 @@
 %bcond_without	doc	# don't build HTML documentation (from SGML source)
 %bcond_without	esd	# without esd support
 %bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
+			# Currently broken.
 #
 # TODO:
 # - remove zip BR?
 #
-%ifarch athlon pentium3 pentium4 amd64
-%define		with_mmx	1
-%endif
+
+#%%ifarch athlon pentium3 pentium4 amd64
+#%%define		with_mmx	1
+#%%endif
 
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.7
-%define	snap	20040416
+%define	snap	20041201
 Release:	0.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
 Source0:	%{name}-linuxonly-%{snap}.tar.bz2
-# Source0-md5:	4f42f20484858452bfc30caa8976415d
+# Source0-md5:	1fbf3278f92469ab259b276d453bdec3
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/

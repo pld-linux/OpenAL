@@ -3,14 +3,14 @@
 # _without_alsa		- without ALSA support
 # _without_doc		- don't build HTML documentation (from SGML source)
 # _without_esd		- without esd support
-# _with_mmx		- use MMX (won't run on non-MMX CPU)
+# _with_mmx		- use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
 #
 # TODO:
 # - remove zip bcond?
 # - check %{name}-acfix.patch if it's still nedded, sorry
 #   for the inconvenience, I'll do it if I can...
 #
-%ifarch i586 i686 athlon
+%ifarch athlon
 %define		_with_mmx	1
 %endif
 Summary:	Open Audio Library

@@ -19,10 +19,10 @@ Source0:	%{name}-linuxonly-20010805.tar.bz2
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-build.patch
 URL:		http://www.openal.com/
-BuildRequires:  alsa-lib-devel
-BuildRequires:  SDL-devel
-BuildRequires:  libvorbis-devel
-BuildRequires:  smpeg-devel
+BuildRequires:	alsa-lib-devel
+BuildRequires:	SDL-devel
+BuildRequires:	libvorbis-devel
+BuildRequires:	smpeg-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -46,7 +46,16 @@ dostarczycieli sprzЙtu i programistСw.
 
 %package devel
 Summary:	Headers for OpenAL
+Summary(pl):	Pliki nagЁСwkowe do OpenAL
 Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
+Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/Разработка/Библиотеки
+Group(uk):	X11/Розробка/Б╕бл╕отеки
+Requires:	%{name} = %{version}
 
 %description devel
 Header files for OpenAL-based programs.
@@ -59,6 +68,14 @@ OpenAL.
 Summary:	OpenAL static library
 Summary(pl):	Statyczna biblioteka OpenAL
 Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
+Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/Разработка/Библиотеки
+Group(uk):	X11/Розробка/Б╕бл╕отеки
+Requires:	%{name}-devel = %{version}
 
 %description static
 OpenAL static library.

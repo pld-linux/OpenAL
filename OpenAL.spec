@@ -1,7 +1,7 @@
 Summary:	OpenAL - Open Audio Library
 Summary(pl):	OpenAL - Otwarta Biblioteka DºwiÍku
 Name:		OpenAL
-Version:	0.0.6
+Version:	20011116
 Release:	1
 License:	LGPL
 Group:		X11/Libraries
@@ -13,12 +13,16 @@ Group(pt_BR):	X11/Bibliotecas
 Group(ru):	X11/‚…¬Ã…œ‘≈À…
 Group(uk):	X11/‚¶¬Ã¶œ‘≈À…
 Vendor:		Loki Entertainment Software - http://www.lokigames.com/
-Source0:	ftp://ftp.openal.com/nie-wiem-co-tu-daÊ.tar.bz2/%{name}-20011116.tar.bz2
-Source1:	ftp://ftp.openal.com/nie-wiem-co-tu-daÊ.tar.bz2/%{name}-headers-20011116.tar.bz2
+Source0:	ftp://ftp.openal.com/nie-wiem-co-tu-daÊ.tar.bz2/%{name}-%{version}.tar.bz2
+Source1:	ftp://ftp.openal.com/nie-wiem-co-tu-daÊ.tar.bz2/%{name}-headers-%{version}.tar.bz2
 Patch0:		%{name}-stdio.patch
 Patch1:		%{name}-include_unconsequency.patch
 Patch2:		%{name}-symlinks.patch
 URL:		http://www.openal.com/
+BuildRequires:	alsa-lib-devel
+BuildRequires:	SDL-devel
+BuildRequires:	libvorbis-devel
+BuildRequires:	smpeg-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define 	_noautoreqdep	libGL.so.1 libGLU.so.1
@@ -81,6 +85,7 @@ cp -f AL/*.h include/AL/
 %patch2 -p1
 
 %build
+./autogen.sh
 CFLAGS="%{rpmcflags} -I%{_includedir} \
 	-fexpensive-optimizations 	-funroll-all-loops \
 	-funroll-loops 			-fomit-frame-pointer \
@@ -89,18 +94,21 @@ export CFLAGS
 
 LDFLAGS="-L%{_libdir}" ; export LDFLAGS
 
-sh ./autogen.sh
-
-./configure --enable-prefix=%{_prefix} \
-	    --enable-optimization	--enable-alsa 		--enable-sdl \
-	    --enable-vorbis 		--enable-smpeg 		--enable-capture \
-	    --with-gcc=%{__cc}
+./configure \
+	--enable-prefix=%{_prefix} \
+	--enable-optimization \
+	--enable-alsa \
+	--enable-sdl \
+	--enable-vorbis \
+	--enable-smpeg \
+	--enable-capture \
+	--with-gcc=%{__cc}
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} -e DESTDIR=$RPM_BUILD_ROOT/%{_prefix}/  install
+%{__make} install DESTDIR=$RPM_BUILD_ROOT/%{_prefix}
 
 gzip -9nf TODO NOTES ChangeLog CREDITS COPYING
 
@@ -115,8 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %postun	-p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,755)
-%doc TODO.gz ChangeLog.gz NOTES.gz CREDITS.gz COPYING.gz
+%defattr(644,root,root,755)
+%doc *.gz
 %{_libdir}/*so*
 
 %files devel
@@ -124,5 +132,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/AL/*
 
 %files static
-%defattr(-,root,root,755)
+%defattr(644,root,root,755)
 %{_libdir}/*.a

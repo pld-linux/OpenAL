@@ -1,0 +1,15 @@
+--- tmp/openal/linux/doc/openal.texi.orig	Sat Jan 27 01:04:32 2001
++++ tmp/openal/linux/doc/openal.texi	Fri Feb 14 22:01:25 2003
+@@ -4,9 +4,9 @@
+ 
+ @ifinfo
+ @format
+-START-INFO-DIR-ENTRY
+-* OpenAL: (openal).         The Programmer's Guide to 3d Positional Audio
+-END-INFO-DIR-ENTRY
++@direntry
++* OpenAL: (openal).			Programmer's Guide to 3d Positional Audio
++@end direntry
+ @end format
+ @end ifinfo
+ 

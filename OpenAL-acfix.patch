@@ -1,0 +1,62 @@
+--- tmp/openal/linux/configure.in.orig	Fri Feb 14 20:52:54 2003
++++ tmp/openal/linux/configure.in	Fri Feb 14 20:59:11 2003
+@@ -75,23 +75,7 @@
+ enable_paranoid_locks=no
+ enable_empty_locks=no
+ 
+-CFLAGS="-O6 -fexpensive-optimizations -funroll-all-loops -funroll-loops -fomit-frame-pointer -finline-functions -ffast-math $CFLAGS"
+-
+-dnl add -march
+-case "$target" in 
+-    *i386*)
+-    CFLAGS="$CFLAGS -march=i386" ;;
+-    *i486*)
+-    CFLAGS="$CFLAGS -march=i486" ;;
+-    *i586*)
+-    CFLAGS="$CFLAGS -march=i586" ;;
+-    *i686*)
+-    CFLAGS="$CFLAGS -march=i686" ;;
+-    mips*)
+-    CFLAGS="$CFLAGS -march=mips" ;;
+-    *)
+-    echo "Unknown target $target" ;;
+-esac
++CFLAGS="-fexpensive-optimizations -funroll-all-loops -funroll-loops -fomit-frame-pointer -finline-functions -ffast-math $CFLAGS"
+ 
+ fi
+ 
+@@ -229,7 +229,7 @@
+ [  --enable-dmalloc          enable DMALLOC support       [default=no]],
+               , enable_dmalloc=no)
+ if test x$enable_dmalloc = xyes; then
+-    AC_CHECK_HEADER(dmalloc.h, 
++    AC_CHECK_HEADER(dmalloc.h,[
+     	dnl header found
+ 	AC_DEFINE(DMALLOC)
+ 	AC_DEFINE(DMALLOC_FUNC_CHECK)
+@@ -239,14 +239,14 @@
+     	REDUNDANT_DECLS_WARN=no,
+ 	dnl header not found, check local/include
+ 	dnl invalid cache
+-	AC_CHECK_HEADER(/usr/local/include/dmalloc.h,
++	AC_CHECK_HEADER(/usr/local/include/dmalloc.h,[
+ 		dnl header found in local/include
+ 		AC_DEFINE(DMALLOC)
+ 		AC_DEFINE(DMALLOC_FUNC_CHECK)
+ 		INCLUDES="$CFLAGS -include \"/usr/local/include/dmalloc.h\""
+ 		LIBS="$LIBS -ldmallocth"
+ 		SHOULD_USE_WERROR=no
+-		REDUNDANT_DECLS_WARN=no))
++		REDUNDANT_DECLS_WARN=no])])
+ fi
+ 
+ dnl efence stuff
+@@ -640,7 +640,7 @@
+ if test x$enable_vorbis = xyes; then
+ 
+ 	AC_CHECK_LIB(vorbisfile, ov_info,
+-		AC_DEFINE( VORBIS_SUPPORT )
++		AC_DEFINE([VORBIS_SUPPORT])
+ 		LIBS="$LIBS -lvorbis -lvorbisfile",, -lvorbis )
+ 
+ fi #   enable_vorbis = no

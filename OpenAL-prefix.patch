@@ -1,10 +1,27 @@
---- linux/Makefile.in	Fri Jan 26 19:04:32 2001
-+++ linux/Makefile.in.works	Sun Aug  5 12:29:26 2001
-@@ -1,6 +1,6 @@
+--- tmp/openal/linux/Makefile.in.orig	Fri Feb 14 21:50:11 2003
++++ tmp/openal/linux/Makefile.in	Fri Feb 14 21:53:11 2003
+@@ -1,8 +1,10 @@
  INSTALL=@INSTALL@
  LN_S=@LN_S@
 -DESTDIR=@prefix@/
-+DESTDIR=$(prefix)/
- DESTINC=$(DESTDIR)include
- DESTLIB=$(DESTDIR)lib
+-DESTINC=$(DESTDIR)include
+-DESTLIB=$(DESTDIR)lib
++includedir=@includedir@
++libdir=@libdir@
++DESTDIR=
++DESTINC=$(DESTDIR)$(includedir)
++DESTLIB=$(DESTDIR)$(libdir)
  MAKE=@MAKE@
+ MAJOR_VERSION=@MAJOR_VERSION@
+ MINOR_VERSION=@MINOR_VERSION@
+@@ -43,8 +45,8 @@
+ 	$(INSTALL) -d -m 755 $(DESTLIB)
+ 	$(INSTALL) -m 755 src/libopenal.a $(DESTLIB)
+ 	$(INSTALL) -m 755 src/libopenal.so.$(VERSION) $(DESTLIB)
+-	$(LN_S) -f $(DESTLIB)/libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so.$(MAJOR_VERSION)
+-	$(LN_S) -f $(DESTLIB)/libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so
++	$(LN_S) -f libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so.$(MAJOR_VERSION)
++	$(LN_S) -f libopenal.so.$(VERSION) $(DESTLIB)/libopenal.so
+ 	$(INSTALL) -m 444 ../include/AL/al.h $(DESTINC)/AL
+ 	$(INSTALL) -m 444 ../include/AL/alc.h $(DESTINC)/AL
+ 	$(INSTALL) -m 444 ../include/AL/alu.h $(DESTINC)/AL

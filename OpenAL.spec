@@ -1,23 +1,42 @@
+#
+# Conditional build:
+# _without_alsa		- without ALSA support
+# _without_doc		- don't build HTML documentation (from SGML source)
+# _with_mmx		- use MMX (won't run on non-MMX CPU)
+#
+%ifarch athlon
+%define		_with_mmx	1
+%endif
+%ifnarch i586 i686 athlon
+%define		_with_mmx	0
+%endif
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
 Release:	1
 License:	LGPL
-Group:		X11/Libraries
+Group:		Libraries
 Vendor:		Loki Entertainment Software - http://www.lokigames.com/
 # This is tarball taken directly form Mandrake Cooker .src.rpm
 Source0:	%{name}-linuxonly-20010805.tar.bz2
 # Those patches came from Mandrake Cooker (only changed names)
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-build.patch
+Patch2:		%{name}-acfix.patch
+Patch3:		%{name}-info.patch
 URL:		http://www.openal.com/
-BuildRequires:	alsa-lib-devel
 BuildRequires:	SDL-devel
+%{!?_without_alsa:BuildRequires:	alsa-lib-devel}
+BuildRequires:	autoconf
+BuildRequires:	automake
+%{!?_without_doc:BuildRequires:	docbook-utils}
+%{!?_without_doc:BuildRequires:	gnome-doc-tools}
 BuildRequires:	libvorbis-devel
+%{?_with_mmx:BuildRequires:	nasm}
 BuildRequires:	smpeg-devel
+BuildRequires:	texinfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
 
 %description
 OpenAL, the Open Audio Library, is a joint effort to create an open,
@@ -39,7 +58,7 @@ dostarczycieli sprzêtu i programistów.
 %package devel
 Summary:	Headers for OpenAL
 Summary(pl):	Pliki nag³ówkowe do OpenAL
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name} = %{version}
 
 %description devel
@@ -52,7 +71,7 @@ OpenAL.
 %package static
 Summary:	OpenAL static library
 Summary(pl):	Statyczna biblioteka OpenAL
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -62,33 +81,44 @@ OpenAL static library.
 Biblioteka OpenAL do statycznego linkowania.
 
 %prep
-%setup -q -n tmp/openal
-%patch0 -p0
+%setup -q -n tmp
+%patch0 -p1
+%patch2 -p1
+%patch3 -p1
+cd openal
 %patch1 -p0
 
+echo 'AC_DEFUN([AC_HAS_MMX],[$%{?_with_mmx:1}%{!?_with_mmx:2}])' >> linux/acinclude.m4
+
 %build
-cd linux
-sh ./autogen.sh
-%configure  --enable-prefix=%{_prefix} \
-            --enable-optimization \
-	    --enable-alsa \
-	    --enable-sdl \
-	    --enable-vorbis \
-	    --enable-smpeg \
-	    --enable-capture \
-	    --with-gcc=%{__cc}			    
+cd openal/linux
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%configure \
+	%{!?debug:--enable-optimization} \
+	%{?_with_mmx:--enable-arch-asm} \
+	%{!?_without_alsa:--enable-alsa} \
+	--enable-sdl \
+	--enable-vorbis \
+	--enable-smpeg \
+	--enable-capture \
+	--with-gcc=%{__cc}			    
+
 %{__make}
+
+cd ../docs
+%{!?_without_doc:%{__make} full-html}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd linux
-%makeinstall
+install -d $RPM_BUILD_ROOT%{_infodir}
 
-mkdir -p $RPM_BUILD_ROOT%{_infodir}
-install -c  doc/openal.info $RPM_BUILD_ROOT%{_infodir}
+cd openal/linux
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-# This needs patch, but is it worth to waste time ?
-rm -f $RPM_BUILD_ROOT%{_libdir}/libopenal.{so,so.0}
+install doc/openal.info $RPM_BUILD_ROOT%{_infodir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -102,15 +132,17 @@ rm -rf $RPM_BUILD_ROOT
 %postun	devel
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
-
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/*.so*
+%doc openal/linux/{CREDITS,ChangeLog,NOTES,TODO}
+%attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%doc %{_infodir}/openal.info.*
-%{_includedir}/AL/*.h
+%doc openal/linux/doc/LOKI* %{!?_without_doc:openal/docs/oalspecs-full}
+%attr(755,root,root) %{_libdir}/lib*.so
+%{_includedir}/AL
+%{_infodir}/openal.info*
 
 %files static
 %defattr(644,root,root,755)

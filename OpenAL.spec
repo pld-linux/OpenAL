@@ -12,8 +12,6 @@
 #
 %ifarch i586 i686 athlon
 %define		_with_mmx	1
-%else
-%define         _with_mmx       0
 %endif
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku

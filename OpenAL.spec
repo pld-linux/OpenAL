@@ -2,7 +2,7 @@ Summary:	OpenAL - Open Audio Library
 Summary(pl):	OpenAL - Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.6
-Release:	1
+Release:	2
 License:	LGPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
@@ -81,15 +81,22 @@ cp -f AL/*.h include/AL/
 %patch2 -p1
 
 %build
-sh ./autogen.sh
-./configure --enable-prefix=%{_prefix} --enable-optimization
-%{__make} \
-	CFLAGS="%{rpmcflags} -I%{_includedir} \
-	-fexpensive-optimizations -funroll-all-loops -funroll-loops -fomit-frame-pointer \
-	-finline-functions -ffast-math"	
-	LIBS="-L%{_libdir} " \
-	CC=%{__cc}
+CFLAGS="%{rpmcflags} -I%{_includedir} \
+	-fexpensive-optimizations 	-funroll-all-loops \
+	-funroll-loops 			-fomit-frame-pointer \
+	-finline-functions 		-ffast-math "
+export CFLAGS
 
+LDFLAGS="-L%{_libdir}" ; export LDFLAGS
+
+sh ./autogen.sh
+
+./configure --enable-prefix=%{_prefix} \
+	    --enable-optimization	--enable-alsa 		--enable-sdl \
+	    --enable-vorbis 		--enable-smpeg 		--enable-capture \
+	    --with-gcc=%{__cc}
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT

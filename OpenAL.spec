@@ -11,7 +11,7 @@
 # - remove zip BR?
 #
 
-#%%ifarch athlon pentium3 pentium4 amd64
+#%%ifarch athlon pentium3 pentium4 %{x8664}
 #%%define		with_mmx	1
 #%%endif
 

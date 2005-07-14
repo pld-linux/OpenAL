@@ -1,27 +1,17 @@
---- openal/linux/Makefile.in.orig	Fri Sep  6 00:54:36 2002
-+++ openal/linux/Makefile.in	Tue Feb 18 21:22:22 2003
-@@ -1,8 +1,10 @@
+diff -urN openal_/linux/Makefile.in openal/linux/Makefile.in
+--- openal_/linux/Makefile.in	2005-07-14 13:42:27.000000000 +0200
++++ openal/linux/Makefile.in	2005-07-14 13:42:47.000000000 +0200
+@@ -1,9 +1,9 @@
  INSTALL=@INSTALL@
  LN_S=@LN_S@
 -DESTDIR=@prefix@/
 -DESTINC=$(DESTDIR)include
 -DESTLIB=$(DESTDIR)lib
-+includedir=@includedir@
-+libdir=@libdir@
+-DESTBIN=$(DESTDIR)bin
 +DESTDIR=
-+DESTINC=$(DESTDIR)$(includedir)
-+DESTLIB=$(DESTDIR)$(libdir)
- MAKE=@MAKE@
- MAJOR_VERSION=@MAJOR_VERSION@
- MINOR_VERSION=@MINOR_VERSION@
-@@ -52,8 +54,8 @@
- install_minor_libs:
- 	$(INSTALL) -d -m 755 $(DESTLIB)
- 	$(INSTALL) -m 755 src/libopenal.$(SO_EXT).$(VERSION) $(DESTLIB)
--	$(LN_S) -f $(DESTLIB)/libopenal.$(SO_EXT).$(VERSION) $(DESTLIB)/libopenal.$(SO_EXT).$(MAJOR_VERSION)
--	$(LN_S) -f $(DESTLIB)/libopenal.$(SO_EXT).$(VERSION) $(DESTLIB)/libopenal.so
-+	$(LN_S) -f libopenal.$(SO_EXT).$(VERSION) $(DESTLIB)/libopenal.$(SO_EXT).$(MAJOR_VERSION)
-+	$(LN_S) -f libopenal.$(SO_EXT).$(VERSION) $(DESTLIB)/libopenal.so
- 
- install_major_lib_only:
- 	$(INSTALL) -d -m 755 $(DESTLIB)
++DESTINC=$(DESTDIR)@prefix@/include
++DESTLIB=$(DESTDIR)@prefix@/lib
++DESTBIN=$(DESTDIR)@prefix@/bin
+ DESTPKG=$(DESTLIB)/pkgconfig/
+ PACKAGE_VERSION_MAJOR=@PACKAGE_VERSION_MAJOR@
+ PACKAGE_VERSION=@PACKAGE_VERSION@

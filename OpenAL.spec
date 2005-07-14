@@ -18,15 +18,15 @@
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
-Version:	0.0.7
-%define	snap	20041201
+Version:	0.0.8
+%define	snap	20050714
 Release:	0.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
 Source0:	%{name}-linuxonly-%{snap}.tar.bz2
-# Source0-md5:	1fbf3278f92469ab259b276d453bdec3
+# Source0-md5:	9f4a98faa2c11bf6d49c8efe60fc8305
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
@@ -92,6 +92,7 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %patch0 -p1
 %patch1 -p1
 
+cp CREDITS docs
 echo 'AC_DEFUN([AC_HAS_MMX],[$%{?with_mmx:1}%{!?with_mmx:2}])' >> linux/acinclude.m4
 
 %build
@@ -101,7 +102,6 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %{__autoheader}
 %configure \
-	%{!?debug:--enable-optimization} \
 	%{?with_mmx:--enable-arch-asm} \
 	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
 	%{?with_arts:--enable-arts} \
@@ -114,7 +114,7 @@ cp -f /usr/share/automake/config.sub .
 
 %{__make}
 
-cd ../docs
+cd ../docs/spec1-0
 %{?with_doc:%{__make} full-html}
 
 %install
@@ -145,8 +145,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc linux/doc/LOKI* %{?with_doc:docs/oalspecs-full}
+%doc linux/doc/LOKI* %{?with_doc:docs/spec1-0/oalspecs-full docs/spec1-1/OpenAL1-1Spec.pdf}
 %attr(755,root,root) %{_libdir}/lib*.so
+%attr(755,root,root) %{_bindir}/*-config
+%{_pkgconfigdir}/*
 %{_includedir}/AL
 %{_infodir}/openal.info*
 

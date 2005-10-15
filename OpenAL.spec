@@ -11,22 +11,20 @@
 # - remove zip BR?
 #
 
-#%%ifarch athlon pentium3 pentium4 %{x8664}
-#%%define		with_mmx	1
-#%%endif
+%define	_branch	Linux_Spec1-0
 
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.8
-%define	snap	20050714
+%define	snap	20051015
 Release:	0.%{snap}.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
-Source0:	%{name}-linuxonly-%{snap}.tar.bz2
-# Source0-md5:	9f4a98faa2c11bf6d49c8efe60fc8305
+Source0:	%{name}-%{_branch}-%{snap}.tar.bz2
+# Source0-md5:	013a571cf588bec1d3a5628b5ed527ea
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
@@ -88,12 +86,11 @@ OpenAL static library.
 Biblioteka OpenAL do konsolidacji statycznej.
 
 %prep
-%setup -q -n openal
+%setup -q -n %{name}-%{_branch}-%{snap}
 %patch0 -p1
 %patch1 -p1
 
 cp CREDITS docs
-echo 'AC_DEFUN([AC_HAS_MMX],[$%{?with_mmx:1}%{!?with_mmx:2}])' >> linux/acinclude.m4
 
 %build
 cd linux
@@ -102,10 +99,9 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %{__autoheader}
 %configure \
-	%{?with_mmx:--enable-arch-asm} \
 	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
-	%{?with_arts:--enable-arts} \
-	%{?with_esd:--enable-esd} \
+	%{?with_arts:--enable-arts --enable-arts-dlopen} \
+	%{?with_esd:--enable-esd --enable-esd-dlopen} \
 	--enable-sdl \
 	--enable-vorbis \
 	--enable-smpeg \

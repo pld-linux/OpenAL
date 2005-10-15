@@ -11,20 +11,24 @@
 # - remove zip BR?
 #
 
-%define	_branch	Linux_Spec1-0
+%ifarch athlon pentium3 pentium4 %{x8664}
+%define		with_mmx	1
+%endif
+
+%define	_branch	HEAD
 
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.8
 %define	snap	20051015
-Release:	0.%{snap}.1
+Release:	1.%{snap}.0.1
 License:	LGPL
 Group:		Libraries
 # from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
 # (without all Win and Mac stuff and demos)
 Source0:	%{name}-%{_branch}-%{snap}.tar.bz2
-# Source0-md5:	013a571cf588bec1d3a5628b5ed527ea
+# Source0-md5:	5de4bd2aac9afb54079de0b6b0f54c71
 Patch0:		%{name}-prefix.patch
 Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
@@ -38,6 +42,7 @@ BuildRequires:	automake
 %{?with_doc:BuildRequires:	gnome-doc-tools}
 BuildRequires:	libvorbis-devel
 %{?with_mmx:BuildRequires:	nasm}
+BuildRequires:	sed >= 4.0
 BuildRequires:	smpeg-devel
 BuildRequires:	texinfo
 BuildRequires:	zip
@@ -91,14 +96,18 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %patch1 -p1
 
 cp CREDITS docs
+sed -i 's/$have_mmx/%{?with_mmx:yes}%{!?with_mmx:no}/' linux/configure.ac
+sed -i 's/ examples test_suite//' alut/Makefile.am
 
 %build
+BDIR=`pwd`
 cd linux
 cp -f /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %configure \
+	%{?with_mmx:--enable-arch-asm} \
 	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
 	%{?with_arts:--enable-arts --enable-arts-dlopen} \
 	%{?with_esd:--enable-esd --enable-esd-dlopen} \
@@ -110,6 +119,18 @@ cp -f /usr/share/automake/config.sub .
 
 %{__make}
 
+cd ../alut
+%{__libtoolize}
+%{__aclocal} -I admin/m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+CPPFLAGS="-I${BDIR}/include"
+LDFLAGS="-L${BDIR}/linux/src"
+export CPPFLAGS LDFLAGS
+%configure
+%{__make}
+
 cd ../docs/spec1-0
 %{?with_doc:%{__make} full-html}
 
@@ -118,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_infodir}
 
 %{__make} -C linux install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+%{__make} -C alut install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install linux/doc/openal.info $RPM_BUILD_ROOT%{_infodir}
@@ -136,8 +160,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc linux/{CREDITS,ChangeLog,NOTES,TODO}
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%doc linux/{ChangeLog,NOTES,TODO}
+%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
@@ -147,6 +171,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/*
 %{_includedir}/AL
 %{_infodir}/openal.info*
+%{_libdir}/lib*.la
 
 %files static
 %defattr(644,root,root,755)

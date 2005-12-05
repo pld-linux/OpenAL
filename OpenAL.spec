@@ -118,6 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_infodir}
 
 %{__make} -C linux install \
+	DESTLIB='$(DESTDIR)%{_libdir}' \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install linux/doc/openal.info $RPM_BUILD_ROOT%{_infodir}

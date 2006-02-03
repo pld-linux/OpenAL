@@ -5,11 +5,6 @@
 %bcond_without	doc	# don't build HTML documentation (from SGML source)
 %bcond_without	esd	# without esd support
 %bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
-			# Currently broken.
-#
-# TODO:
-# - remove zip BR?
-#
 
 %define	_branch	Linux_Spec1-0
 
@@ -40,7 +35,6 @@ BuildRequires:	libvorbis-devel
 %{?with_mmx:BuildRequires:	nasm}
 BuildRequires:	smpeg-devel
 BuildRequires:	texinfo
-BuildRequires:	zip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

@@ -1,5 +1,15 @@
 #
 # Conditional build:
+# TODO: 
+# - Build stops at:
+# arch/i386/x86_floatmul.c:86:74: warning: use of C99 long long integer constant
+# arch/i386/x86_floatmul.c:89:74: warning: use of C99 long long integer constant
+# arch/i386/x86_floatmul.c: In function `_alFloatMul':
+#arch/i386/x86_floatmul.c:86: internal compiler error: in ix86_expand_binop_builtin, at config/i386/i386.c:13246
+# Please submit a full bug report,
+#
+# - autoconf provides undefined macro....
+
 %bcond_without	alsa	# without ALSA support
 %bcond_with	arts	# with aRts support
 %bcond_without	doc	# don't build HTML documentation (from SGML source)
@@ -12,16 +22,13 @@ Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.8
-%define	snap	20051015
-Release:	0.%{snap}.1
+Release:	0.1
 License:	LGPL
 Group:		Libraries
-# from CVS :pserver:guest@opensource.creative.com:/usr/local/cvs-repository /openal
-# (without all Win and Mac stuff and demos)
-Source0:	%{name}-%{_branch}-%{snap}.tar.bz2
-# Source0-md5:	013a571cf588bec1d3a5628b5ed527ea
-Patch0:		%{name}-prefix.patch
-Patch1:		%{name}-info.patch
+Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
+# Source0-md5:	641cf53761f35ee979f3e888614797a0
+#Patch0:		%{name}-prefix.patch
+#Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -80,18 +87,15 @@ OpenAL static library.
 Biblioteka OpenAL do konsolidacji statycznej.
 
 %prep
-%setup -q -n %{name}-%{_branch}-%{snap}
-%patch0 -p1
-%patch1 -p1
-
-cp CREDITS docs
+%setup -q -n openal-%{version}
+#%patch0 -p1
+#%patch1 -p1
 
 %build
-cd linux
 cp -f /usr/share/automake/config.sub .
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
+#%{__aclocal}
+#%{__autoconf}
+#%{__autoheader}
 %configure \
 	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
 	%{?with_arts:--enable-arts --enable-arts-dlopen} \

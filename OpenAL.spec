@@ -16,8 +16,6 @@
 %bcond_without	esd	# without esd support
 %bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
 
-%define	_branch	Linux_Spec1-0
-
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
@@ -108,18 +106,12 @@ cp -f /usr/share/automake/config.sub .
 
 %{__make}
 
-cd ../docs/spec1-0
-%{?with_doc:%{__make} full-html}
-
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_infodir}
 
-%{__make} -C linux install \
-	DESTLIB='$(DESTDIR)%{_libdir}' \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-
-install linux/doc/openal.info $RPM_BUILD_ROOT%{_infodir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -135,17 +127,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc linux/{CREDITS,ChangeLog,NOTES,TODO}
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%doc ChangeLog NOTES TODO
+%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%doc linux/doc/LOKI* %{?with_doc:docs/spec1-0/oalspecs-full docs/spec1-1/OpenAL1-1Spec.pdf}
-%attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_bindir}/*-config
+%attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/*.la
 %{_pkgconfigdir}/*
 %{_includedir}/AL
-%{_infodir}/openal.info*
 
 %files static
 %defattr(644,root,root,755)

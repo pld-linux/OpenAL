@@ -1,6 +1,6 @@
 #
 # Conditional build:
-# TODO: 
+# TODO:
 # - Build stops at:
 # arch/i386/x86_floatmul.c:86:74: warning: use of C99 long long integer constant
 # arch/i386/x86_floatmul.c:89:74: warning: use of C99 long long integer constant

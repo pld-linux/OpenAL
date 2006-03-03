@@ -1,5 +1,4 @@
 #
-# Conditional build:
 # TODO:
 # - Build stops at:
 # arch/i386/x86_floatmul.c:86:74: warning: use of C99 long long integer constant
@@ -10,9 +9,10 @@
 #
 # - autoconf provides undefined macro....
 
+# Conditional build:
+#
 %bcond_without	alsa	# without ALSA support
 %bcond_with	arts	# with aRts support
-%bcond_without	doc	# don't build HTML documentation (from SGML source)
 %bcond_without	esd	# without esd support
 %bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
 
@@ -20,26 +20,19 @@ Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
 Version:	0.0.8
-Release:	0.1
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
 # Source0-md5:	641cf53761f35ee979f3e888614797a0
-#Patch0:		%{name}-prefix.patch
-#Patch1:		%{name}-info.patch
 URL:		http://www.openal.org/
 BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 %{?with_arts:BuildRequires:	artsc-devel}
-BuildRequires:	autoconf
-BuildRequires:	automake
-%{?with_doc:BuildRequires:	docbook-utils}
 %{?with_esd:BuildRequires:	esound-devel}
-%{?with_doc:BuildRequires:	gnome-doc-tools}
 BuildRequires:	libvorbis-devel
 %{?with_mmx:BuildRequires:	nasm}
 BuildRequires:	smpeg-devel
-BuildRequires:	texinfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -86,29 +79,25 @@ Biblioteka OpenAL do konsolidacji statycznej.
 
 %prep
 %setup -q -n openal-%{version}
-#%patch0 -p1
-#%patch1 -p1
 
 %build
-cp -f /usr/share/automake/config.sub .
-#%{__aclocal}
-#%{__autoconf}
-#%{__autoheader}
 %configure \
 	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
 	%{?with_arts:--enable-arts --enable-arts-dlopen} \
 	%{?with_esd:--enable-esd --enable-esd-dlopen} \
-	--enable-sdl \
-	--enable-vorbis \
-	--enable-smpeg \
+	--enable-sdl --enable-sdl-dlopen \
 	--enable-capture \
+	--enable-linux \
+	--enable-null \
+	--enable-waveout \
+	--enable-vorbis --enable-vorbis-dlopen \
+	--enable-mp3 --enable-mp3-dlopen \
 	--with-gcc=%{__cc}
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_infodir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -118,12 +107,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
-
-%post devel
-[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
-
-%postun	devel
-[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
 %files
 %defattr(644,root,root,755)

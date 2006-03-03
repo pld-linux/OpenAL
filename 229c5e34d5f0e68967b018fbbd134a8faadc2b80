@@ -1,0 +1,5 @@
+- remove OpenGL stuff (unused)
+- remove duplicated {C,LD}FLAGS
+- fix DESTDIR
+- spread the libs between %{name} and -devel
+- drop the license (it's LGPL)

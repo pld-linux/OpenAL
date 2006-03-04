@@ -1,21 +1,17 @@
 #
-# TODO:
-# - Build stops at:
-# arch/i386/x86_floatmul.c:86:74: warning: use of C99 long long integer constant
-# arch/i386/x86_floatmul.c:89:74: warning: use of C99 long long integer constant
-# arch/i386/x86_floatmul.c: In function `_alFloatMul':
-#arch/i386/x86_floatmul.c:86: internal compiler error: in ix86_expand_binop_builtin, at config/i386/i386.c:13246
-# Please submit a full bug report,
-#
-# - autoconf provides undefined macro....
-
 # Conditional build:
 #
 %bcond_without	alsa	# without ALSA support
 %bcond_with	arts	# with aRts support
 %bcond_without	esd	# without esd support
-%bcond_with	mmx	# use MMX (makes sense on i[56]86 with MMX; won't run on non-MMX CPU)
-
+%bcond_without	mmx	# don't use MMX
+#
+%ifnarch %{ix86} %{x8664}
+%undefine	with_mmx
+%endif
+%ifarch i386 i486
+%undefine	with_mmx
+%endif
 Summary:	Open Audio Library
 Summary(pl):	Otwarta Biblioteka D¼wiêku
 Name:		OpenAL
@@ -30,10 +26,23 @@ BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 %{?with_arts:BuildRequires:	artsc-devel}
 %{?with_esd:BuildRequires:	esound-devel}
+%if %{with mmx}
+# MMX code triggers ICE in gcc 3.3.x
+BuildRequires:	gcc >= 5:3.4.0
+%endif
 BuildRequires:	libvorbis-devel
+%ifarch %{ix86}
 %{?with_mmx:BuildRequires:	nasm}
+%endif
+BuildRequires:	pkgconfig
 BuildRequires:	smpeg-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%if %{with mmx}
+%define		specflags_ia32	-mmmx
+%else
+%define		specflags_ia32	-U__MMX__
+%endif
 
 %description
 OpenAL, the Open Audio Library, is a joint effort to create an open,
@@ -89,10 +98,13 @@ Biblioteka OpenAL do konsolidacji statycznej.
 	--enable-capture \
 	--enable-linux \
 	--enable-null \
+%ifarch i586 i686
+	--enable-optim-generic \
+%endif
 	--enable-waveout \
 	--enable-vorbis --enable-vorbis-dlopen \
 	--enable-mp3 --enable-mp3-dlopen \
-	--with-gcc=%{__cc}
+	--with-gcc="%{__cc}"
 
 %{__make}
 
@@ -111,16 +123,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog NOTES TODO
-%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+%attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*-config
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/*.la
-%{_pkgconfigdir}/*
+%doc common/specification/OpenAL1-1Spec.pdf
+%attr(755,root,root) %{_bindir}/openal-config
+%attr(755,root,root) %{_libdir}/libopenal.so
+%{_libdir}/libopenal.la
 %{_includedir}/AL
+%{_pkgconfigdir}/openal.pc
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/*.a
+%{_libdir}/libopenal.a

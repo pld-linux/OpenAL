@@ -22,6 +22,9 @@ Group:		Libraries
 Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
 # Source0-md5:	641cf53761f35ee979f3e888614797a0
 URL:		http://www.openal.org/
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 %{?with_arts:BuildRequires:	artsc-devel}

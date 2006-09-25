@@ -90,15 +90,20 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %setup -q -n openal-%{version}
 
 %build
+cp -f /usr/share/automake/config.sub .
+%{__libtoolize}
+%{__aclocal} -I admin/autotools/m4
+%{__autoconf}
+%{__autoheader}
 %configure \
-	%{?with_alsa:--enable-alsa --enable-alsa-dlopen} \
-	%{?with_arts:--enable-arts --enable-arts-dlopen} \
-	%{?with_esd:--enable-esd --enable-esd-dlopen} \
+	--%{?with_alsa:en}%{!?with_alsa:dis}able-alsa{,-dlopen} \
+	--%{?with_arts:en}%{!?with_arts:dis}able-arts{,-dlopen} \
+	--%{?with_esd:en}%{!?with_esd:dis}able-esd{,-dlopen} \
 	--enable-sdl --enable-sdl-dlopen \
 	--enable-capture \
 	--enable-linux \
 	--enable-null \
-%ifarch i586 i686
+%ifarch amd64 x86_64 athlon i686 i586
 	--enable-optim-generic \
 %endif
 	--enable-waveout \

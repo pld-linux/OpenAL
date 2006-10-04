@@ -22,17 +22,17 @@ Group:		Libraries
 Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
 # Source0-md5:	641cf53761f35ee979f3e888614797a0
 URL:		http://www.openal.org/
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool
 BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 %{?with_arts:BuildRequires:	artsc-devel}
+BuildRequires:	autoconf >= 2.56
+BuildRequires:	automake
 %{?with_esd:BuildRequires:	esound-devel}
 %if %{with mmx}
 # MMX code triggers ICE in gcc 3.3.x
 BuildRequires:	gcc >= 5:3.4.0
 %endif
+BuildRequires:	libtool
 BuildRequires:	libvorbis-devel
 %ifarch %{ix86}
 %{?with_mmx:BuildRequires:	nasm}
@@ -93,11 +93,11 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %setup -q -n openal-%{version}
 
 %build
-cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
 %{__aclocal} -I admin/autotools/m4
 %{__autoconf}
 %{__autoheader}
+%{__automake}
 %configure \
 	--%{?with_alsa:en}%{!?with_alsa:dis}able-alsa{,-dlopen} \
 	--%{?with_arts:en}%{!?with_arts:dis}able-arts{,-dlopen} \

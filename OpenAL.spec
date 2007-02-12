@@ -13,7 +13,7 @@
 %undefine	with_mmx
 %endif
 Summary:	Open Audio Library
-Summary(pl.UTF-8):   Otwarta Biblioteka Dźwięku
+Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	0.0.8
 Release:	2
@@ -67,7 +67,7 @@ dostarczycieli sprzętu i programistów.
 
 %package devel
 Summary:	Headers for OpenAL
-Summary(pl.UTF-8):   Pliki nagłówkowe do OpenAL
+Summary(pl.UTF-8):	Pliki nagłówkowe do OpenAL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -80,7 +80,7 @@ OpenAL.
 
 %package static
 Summary:	OpenAL static library
-Summary(pl.UTF-8):   Statyczna biblioteka OpenAL
+Summary(pl.UTF-8):	Statyczna biblioteka OpenAL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 

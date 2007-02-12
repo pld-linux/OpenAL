@@ -13,7 +13,7 @@
 %undefine	with_mmx
 %endif
 Summary:	Open Audio Library
-Summary(pl):	Otwarta Biblioteka D¼wiêku
+Summary(pl.UTF-8):   Otwarta Biblioteka DÅºwiÄ™ku
 Name:		OpenAL
 Version:	0.0.8
 Release:	2
@@ -56,38 +56,38 @@ developers and desktop users that rely on portable standards like
 OpenGL, for games and other multimedia applications. OpenAL is already
 supported by a number of hardware vendors and developers.
 
-%description -l pl
-OpenAL, otwarta biblioteka d¼wiêku, to po³±czony wysi³ek w celu
-stworzenia otwartego, niezale¿nego od producentów, miêdzyplatformowego
-interfejsu projektowania aplikacji w czê¶ci obs³ugi d¼wiêku.
-Biblioteka adresowana jest do twórców aplikacji i u¿ytkowników,
-którzy wybieraj± przeno¶ne standardy, jak OpenGL, w grach i
-aplikacjach multimedialnych. OpenAL posiada ju¿ wsparcie wielu
-dostarczycieli sprzêtu i programistów.
+%description -l pl.UTF-8
+OpenAL, otwarta biblioteka dÅºwiÄ™ku, to poÅ‚Ä…czony wysiÅ‚ek w celu
+stworzenia otwartego, niezaleÅ¼nego od producentÃ³w, miÄ™dzyplatformowego
+interfejsu projektowania aplikacji w czÄ™Å›ci obsÅ‚ugi dÅºwiÄ™ku.
+Biblioteka adresowana jest do twÃ³rcÃ³w aplikacji i uÅ¼ytkownikÃ³w,
+ktÃ³rzy wybierajÄ… przenoÅ›ne standardy, jak OpenGL, w grach i
+aplikacjach multimedialnych. OpenAL posiada juÅ¼ wsparcie wielu
+dostarczycieli sprzÄ™tu i programistÃ³w.
 
 %package devel
 Summary:	Headers for OpenAL
-Summary(pl):	Pliki nag³ówkowe do OpenAL
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe do OpenAL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for OpenAL-based programs.
 
-%description devel -l pl
-Pliki nag³ówkowe potrzebne przy budowaniu programów opartych na
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe potrzebne przy budowaniu programÃ³w opartych na
 OpenAL.
 
 %package static
 Summary:	OpenAL static library
-Summary(pl):	Statyczna biblioteka OpenAL
+Summary(pl.UTF-8):   Statyczna biblioteka OpenAL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 OpenAL static library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Biblioteka OpenAL do konsolidacji statycznej.
 
 %prep

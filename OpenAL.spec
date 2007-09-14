@@ -16,7 +16,7 @@ Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	0.0.8
-Release:	2
+Release:	3
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz

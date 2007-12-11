@@ -116,7 +116,7 @@ Biblioteka OpenAL do konsolidacji statycznej.
 	--enable-mp3 --enable-mp3-dlopen \
 	--with-gcc="%{__cc}"
 
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT

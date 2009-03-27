@@ -107,7 +107,6 @@ Biblioteka OpenAL do konsolidacji statycznej.
 	--%{?with_arts:en}%{!?with_arts:dis}able-arts{,-dlopen} \
 	--%{?with_esd:en}%{!?with_esd:dis}able-esd{,-dlopen} \
 	--enable-sdl --enable-sdl-dlopen \
-	--enable-capture \
 	--enable-linux \
 	--enable-null \
 %ifarch amd64 x86_64 athlon i686 i586
@@ -115,8 +114,7 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %endif
 	--enable-waveout \
 	--enable-vorbis --enable-vorbis-dlopen \
-	--enable-mp3 --enable-mp3-dlopen \
-	--with-gcc="%{__cc}"
+	--enable-mp3 --enable-mp3-dlopen
 
 %{__make} -j1
 

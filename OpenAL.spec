@@ -16,13 +16,14 @@ Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	0.0.8
-Release:	3
+Release:	4
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
 # Source0-md5:	641cf53761f35ee979f3e888614797a0
 URL:		http://www.openal.org/
 Patch0:		%{name}-alc.h.patch
+Patch1:		%{name}-pkgconfig.patch
 BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 %{?with_arts:BuildRequires:	artsc-devel}
@@ -93,6 +94,7 @@ Biblioteka OpenAL do konsolidacji statycznej.
 %prep
 %setup -q -n openal-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -134,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ChangeLog NOTES TODO
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libopenal.so.?
 
 %files devel
 %defattr(644,root,root,755)

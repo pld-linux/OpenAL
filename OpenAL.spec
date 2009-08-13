@@ -1,53 +1,27 @@
 #
+# TODO:
+# - not sure where %{_bindir}/openal-info should go, correct this or remove TODO
+#
 # Conditional build:
 #
-%bcond_without	alsa	# without ALSA support
-%bcond_with	arts	# with aRts support
-%bcond_without	esd	# without esd support
-%bcond_without	mmx	# don't use MMX
+%bcond_without	alsa		# without ALSA support
+%bcond_without	portaudio	# without PortAudio support
 #
-%ifnarch %{ix86} %{x8664}
-%undefine	with_mmx
-%endif
-%ifarch i386 i486
-%undefine	with_mmx
-%endif
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	0.0.8
-Release:	4
+Version:	1.8.466
+Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	http://www.openal.org/openal_webstf/downloads/openal-%{version}.tar.gz
-# Source0-md5:	641cf53761f35ee979f3e888614797a0
+Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
+# Source0-md5:	28d500e0a6b0a7a824b509ad9eaba7be
+#URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
-Patch0:		%{name}-alc.h.patch
-Patch1:		%{name}-pkgconfig.patch
-BuildRequires:	SDL-devel
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
-%{?with_arts:BuildRequires:	artsc-devel}
-BuildRequires:	autoconf >= 2.56
-BuildRequires:	automake
-%{?with_esd:BuildRequires:	esound-devel}
-%if %{with mmx}
-# MMX code triggers ICE in gcc 3.3.x
-BuildRequires:	gcc >= 5:3.4.0
-%endif
-BuildRequires:	libtool
-BuildRequires:	libvorbis-devel
-%ifarch %{ix86}
-%{?with_mmx:BuildRequires:	nasm}
-%endif
-BuildRequires:	pkgconfig
-BuildRequires:	smpeg-devel
+BuildRequires:	cmake
+%{?with_portaudio:BuildRequires:	portaudio-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%if %{with mmx}
-%define		specflags_ia32	-mmmx
-%else
-%define		specflags_ia32	-U__MMX__
-%endif
 
 %description
 OpenAL, the Open Audio Library, is a joint effort to create an open,
@@ -79,44 +53,15 @@ Header files for OpenAL-based programs.
 Pliki nagłówkowe potrzebne przy budowaniu programów opartych na
 OpenAL.
 
-%package static
-Summary:	OpenAL static library
-Summary(pl.UTF-8):	Statyczna biblioteka OpenAL
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-OpenAL static library.
-
-%description static -l pl.UTF-8
-Biblioteka OpenAL do konsolidacji statycznej.
-
 %prep
-%setup -q -n openal-%{version}
-%patch0 -p1
-%patch1 -p1
+%setup -q -n openal-soft-%{version}
 
 %build
-%{__libtoolize}
-%{__aclocal} -I admin/autotools/m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--%{?with_alsa:en}%{!?with_alsa:dis}able-alsa{,-dlopen} \
-	--%{?with_arts:en}%{!?with_arts:dis}able-arts{,-dlopen} \
-	--%{?with_esd:en}%{!?with_esd:dis}able-esd{,-dlopen} \
-	--enable-sdl --enable-sdl-dlopen \
-	--enable-linux \
-	--enable-null \
-%ifarch amd64 x86_64 athlon i686 i586
-	--enable-optim-generic \
-%endif
-	--enable-waveout \
-	--enable-vorbis --enable-vorbis-dlopen \
-	--enable-mp3 --enable-mp3-dlopen
-
-%{__make} -j1
+%cmake \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DLIB_INSTALL_DIR=%{_lib} \
+	.
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -132,19 +77,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog NOTES TODO
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libopenal.so.?
 
 %files devel
 %defattr(644,root,root,755)
-%doc common/specification/OpenAL1-1Spec.pdf
-%attr(755,root,root) %{_bindir}/openal-config
+%attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so
-%{_libdir}/libopenal.la
 %{_includedir}/AL
 %{_pkgconfigdir}/openal.pc
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libopenal.a

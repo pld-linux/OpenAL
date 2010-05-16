@@ -10,12 +10,12 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.11.753
+Version:	1.12.854
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	e9a071a00fb9cb37dbbe290818d5906b
+# Source0-md5:	fbf36451fdebd6466edbdc0ee7db9603
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}

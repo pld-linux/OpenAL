@@ -1,7 +1,4 @@
 #
-# TODO:
-# - not sure where %{_bindir}/openal-info should go, correct this or remove TODO
-#
 # Conditional build:
 #
 %bcond_without	alsa		# without ALSA support
@@ -12,7 +9,7 @@ Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	1.12.854
 Release:	1
-License:	LGPL
+License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
 # Source0-md5:	fbf36451fdebd6466edbdc0ee7db9603
@@ -57,10 +54,11 @@ OpenAL.
 %setup -q -n openal-soft-%{version}
 
 %build
-%cmake \
+%cmake . \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-	-DLIB_INSTALL_DIR=%{_lib} \
-	.
+	-DCMAKE_VERBOSE_MAKEFILE=1 \
+	-DLIB_INSTALL_DIR=%{_lib}
+
 %{__make}
 
 %install
@@ -77,12 +75,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libopenal.so.?
+%attr(755,root,root) %ghost %{_libdir}/libopenal.so.1
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so
 %{_includedir}/AL
 %{_pkgconfigdir}/openal.pc

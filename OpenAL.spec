@@ -1,23 +1,24 @@
 #
 # Conditional build:
-#
 %bcond_without	alsa		# without ALSA support
 %bcond_without	portaudio	# without PortAudio support
+%bcond_without	pulseaudio	# without PulseAudio support
 #
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.12.854
+Version:	1.13
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	fbf36451fdebd6466edbdc0ee7db9603
+# Source0-md5:	58b7d2809790c70681b825644c5f3614
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake
 %{?with_portaudio:BuildRequires:	portaudio-devel}
+%{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -57,7 +58,10 @@ OpenAL.
 %cmake . \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 	-DCMAKE_VERBOSE_MAKEFILE=1 \
-	-DLIB_INSTALL_DIR=%{_lib}
+	-DLIB_INSTALL_DIR=%{_lib} \
+	%{!?with_alsa:-DALSA=OFF} \
+	%{!?with_portaudio:-DPORTAUDIO=OFF} \
+	%{!?with_pulseaudio:-DPULSEAUDIO=OFF}
 
 %{__make}
 

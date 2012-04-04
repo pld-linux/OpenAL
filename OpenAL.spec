@@ -7,12 +7,13 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.13
+Version:	1.14
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	58b7d2809790c70681b825644c5f3614
+# Source0-md5:	3d8b86c21a2f87a2a5e60f78f3b3f03d
+Patch0:		%{name}-link.patch
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -53,11 +54,13 @@ OpenAL.
 
 %prep
 %setup -q -n openal-soft-%{version}
+%patch0 -p1
 
 %build
 %cmake . \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 	-DCMAKE_VERBOSE_MAKEFILE=1 \
+	-DEXAMPLES=OFF \
 	-DLIB_INSTALL_DIR=%{_lib} \
 	%{!?with_alsa:-DALSA=OFF} \
 	%{!?with_portaudio:-DPORTAUDIO=OFF} \
@@ -79,6 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/makehrtf
 %attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libopenal.so.1

@@ -8,7 +8,7 @@ Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	1.14
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
@@ -70,9 +70,12 @@ OpenAL.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/openal
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+install -p alsoftrc.sample %{_sysconfdir}/openal/alsoft.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,6 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/openal
 %attr(755,root,root) %{_bindir}/makehrtf
 %attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*

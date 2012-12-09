@@ -7,17 +7,19 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.14
-Release:	3
+Version:	1.15
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	3d8b86c21a2f87a2a5e60f78f3b3f03d
-Patch0:		%{name}-link.patch
+# Source0-md5:	0eeb0551420b8fec300fe5db6d9a7902
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
-BuildRequires:	cmake
+BuildRequires:	cmake >= 2.4
+# for examples: libavcodec>=53.61.100 libavformat>=53.32.100 libavutil>=51.35.100
+BuildRequires:	ffmpeg-devel
+BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -54,7 +56,6 @@ OpenAL.
 
 %prep
 %setup -q -n openal-soft-%{version}
-%patch0 -p1
 
 %build
 %cmake . \

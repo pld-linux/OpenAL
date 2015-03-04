@@ -8,7 +8,7 @@ Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	1.15.1
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
@@ -17,8 +17,6 @@ Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 2.4
-# for examples: libavcodec>=53.61.100 libavformat>=53.32.100 libavutil>=51.35.100
-BuildRequires:	ffmpeg-devel
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}

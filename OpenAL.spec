@@ -1,25 +1,33 @@
 #
 # Conditional build:
-%bcond_without	alsa		# without ALSA support
-%bcond_without	portaudio	# without PortAudio support
-%bcond_without	pulseaudio	# without PulseAudio support
+%bcond_without	alsa		# ALSA backend
+%bcond_without	fluidsynth	# FluidSynth MIDI support
+%bcond_without	portaudio	# PortAudio backend
+%bcond_without	pulseaudio	# PulseAudio backend
+%bcond_without	gui		# alsoft-config GUI
 #
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.15.1
-Release:	2
+Version:	1.16.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	ea83dec3b9655a27d28e7bc7cae9cd71
+# Source0-md5:	14db4b0d12f07252070b4fe5eb5911f6
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
-BuildRequires:	cmake >= 2.4
+BuildRequires:	cmake >= 2.6
+%{?with_fluidsynth:BuildRequires:	fluidsynth-devel}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
+%if %{with gui}
+BuildRequires:	QtCore-devel >= 4.8.0
+BuildRequires:	QtGui-devel >= 4.8.0
+BuildRequires:	qt4-build >= 4.8.0
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,11 +60,27 @@ Header files for OpenAL-based programs.
 Pliki nagłówkowe potrzebne przy budowaniu programów opartych na
 OpenAL.
 
+%package gui
+Summary:	OpenAL configuration GUI
+Summary(pl.UTF-8):	Graficzny interfejs do konfiguracji biblioteki OpenAL
+Group:		X11/Applications/Sound
+Requires:	%{name} = %{version}-%{release}
+Requires:	QtCore >= 4.8.0
+Requires:	QtGui >= 4.8.0
+
+%description gui
+OpenAL configuration GUI.
+
+%description gui -l pl.UTF-8
+Graficzny interfejs do konfiguracji biblioteki OpenAL.
+
 %prep
 %setup -q -n openal-soft-%{version}
 
 %build
 %cmake . \
+	%{!?with_fluidsynth:-DALSOFT_MIDI_FLUIDSYNTH=ON} \
+	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 	-DCMAKE_VERBOSE_MAKEFILE=1 \
 	-DEXAMPLES=OFF \
@@ -89,9 +113,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libopenal.so.1
+%{_datadir}/openal
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libopenal.so
 %{_includedir}/AL
 %{_pkgconfigdir}/openal.pc
+
+%if %{with gui}
+%files gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/alsoft-config
+%endif

@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	alsa		# ALSA backend
 %bcond_without	fluidsynth	# FluidSynth MIDI support
+%bcond_without	jack		# JACK backend
 %bcond_without	portaudio	# PortAudio backend
 %bcond_without	pulseaudio	# PulseAudio backend
 %bcond_without	gui		# alsoft-config GUI
@@ -9,17 +10,18 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.16.0
+Version:	1.17.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	14db4b0d12f07252070b4fe5eb5911f6
+# Source0-md5:	0b7d1e79fd57e6c9827a3bbdc97f19b6
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 2.6
 %{?with_fluidsynth:BuildRequires:	fluidsynth-devel}
+%{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
@@ -85,9 +87,10 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 	-DCMAKE_VERBOSE_MAKEFILE=1 \
 	-DEXAMPLES=OFF \
 	-DLIB_INSTALL_DIR=%{_lib} \
-	%{!?with_alsa:-DALSA=OFF} \
-	%{!?with_portaudio:-DPORTAUDIO=OFF} \
-	%{!?with_pulseaudio:-DPULSEAUDIO=OFF}
+	%{!?with_alsa:-DALSOFT_BACKEND_ALSA=OFF} \
+	%{!?with_jack:-DALSOFT_BACKEND_JACK=OFF} \
+	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
+	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF}
 
 %{__make}
 
@@ -99,6 +102,9 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/openal
 	DESTDIR=$RPM_BUILD_ROOT
 
 install -p alsoftrc.sample $RPM_BUILD_ROOT%{_sysconfdir}/openal/alsoft.conf
+
+# these look not really useful
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{altonegen,bsincgen}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

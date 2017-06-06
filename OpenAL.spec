@@ -24,6 +24,7 @@ BuildRequires:	cmake >= 3.0.2
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
+BuildRequires:	rpmbuild(macros) >= 1.605
 %if %{with gui}
 %if %{with qt4}
 BuildRequires:	QtCore-devel >= 4.8.0

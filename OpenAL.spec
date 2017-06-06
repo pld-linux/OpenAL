@@ -1,34 +1,40 @@
 #
 # Conditional build:
 %bcond_without	alsa		# ALSA backend
-%bcond_without	fluidsynth	# FluidSynth MIDI support
 %bcond_without	jack		# JACK backend
 %bcond_without	portaudio	# PortAudio backend
 %bcond_without	pulseaudio	# PulseAudio backend
 %bcond_without	gui		# alsoft-config GUI
+%bcond_with	qt4		# Qt 4 instead of Qt 5 for GUI
 #
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.17.2
+Version:	1.18.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	1764e0d8fec499589b47ebc724e0913d
+# Source0-md5:	704d41343b52dd04115de2dcdac5de03
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
-BuildRequires:	cmake >= 2.6
-%{?with_fluidsynth:BuildRequires:	fluidsynth-devel}
+BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 %if %{with gui}
+%if %{with qt4}
 BuildRequires:	QtCore-devel >= 4.8.0
 BuildRequires:	QtGui-devel >= 4.8.0
 BuildRequires:	qt4-build >= 4.8.0
+%else
+BuildRequires:	Qt5Core-devel >= 5
+BuildRequires:	Qt5Gui-devel >= 5
+BuildRequires:	Qt5Widgets-devel >= 5
+BuildRequires:	qt5-build >= 5
+%endif
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -80,17 +86,15 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 %setup -q -n openal-soft-%{version}
 
 %build
-%cmake . \
-	%{!?with_fluidsynth:-DALSOFT_MIDI_FLUIDSYNTH=ON} \
-	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
-	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-	-DCMAKE_VERBOSE_MAKEFILE=1 \
-	-DEXAMPLES=OFF \
-	-DLIB_INSTALL_DIR=%{_lib} \
+cd build
+%cmake .. \
 	%{!?with_alsa:-DALSOFT_BACKEND_ALSA=OFF} \
 	%{!?with_jack:-DALSOFT_BACKEND_JACK=OFF} \
 	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
-	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF}
+	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF} \
+	-DALSOFT_EXAMPLES=OFF \
+	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
+	%{?with_qt4:-DALSOFT_NO_QT5=ON} \
 
 %{__make}
 
@@ -98,7 +102,7 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/openal
 
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install -p alsoftrc.sample $RPM_BUILD_ROOT%{_sysconfdir}/openal/alsoft.conf
@@ -126,6 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libopenal.so
 %{_includedir}/AL
 %{_pkgconfigdir}/openal.pc
+%{_libdir}/cmake/OpenAL
 
 %if %{with gui}
 %files gui

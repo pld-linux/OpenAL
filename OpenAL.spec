@@ -10,12 +10,12 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.18.2
+Version:	1.19.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	d4eeb0889812e2fdeaa1843523d76190
+# Source0-md5:	1f59accf1a187384e155e82663aa3f9a
 #URL:		http://kcat.strangesoft.net/openal.html
 URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -109,7 +109,7 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/openal
 install -p alsoftrc.sample $RPM_BUILD_ROOT%{_sysconfdir}/openal/alsoft.conf
 
 # these look not really useful
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/{altonegen,bsincgen}
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/altonegen
 
 %clean
 rm -rf $RPM_BUILD_ROOT

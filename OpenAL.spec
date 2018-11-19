@@ -4,20 +4,29 @@
 %bcond_without	jack		# JACK backend
 %bcond_without	portaudio	# PortAudio backend
 %bcond_without	pulseaudio	# PulseAudio backend
+%bcond_with	sdl		# SDL2 backend
+%bcond_with	sse		# force use of SSE instructions (x86)
+%bcond_with	sse2		# force use of SSE2 instructions (x86)
 %bcond_without	gui		# alsoft-config GUI
 %bcond_with	qt4		# Qt 4 instead of Qt 5 for GUI
 #
+%ifarch pentium3 pentium4
+%define	with_sse	1
+%endif
+%ifarch pentium4
+%define	with_sse2	1
+%endif
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.19.0
+Version:	1.19.1
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://kcat.strangesoft.net/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	1f59accf1a187384e155e82663aa3f9a
-#URL:		http://kcat.strangesoft.net/openal.html
+Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
+# Source0-md5:	af6f148c342276a51ea9c33ebd303f78
 URL:		http://www.openal.org/
+%{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
@@ -93,6 +102,9 @@ cd build
 	%{!?with_jack:-DALSOFT_BACKEND_JACK=OFF} \
 	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
 	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF} \
+	%{?with_sdl:-DALSOFT_BACKEND_SDL2=ON} \
+	%{!?with_sse:-DALSOFT_ENABLE_SSE_CODEGEN=OFF} \
+	%{!?with_sse2:-DALSOFT_ENABLE_SSE2_CODEGEN=OFF} \
 	-DALSOFT_EXAMPLES=OFF \
 	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
 	%{?with_qt4:-DALSOFT_NO_QT5=ON} \

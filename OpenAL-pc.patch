@@ -1,0 +1,15 @@
+--- openal-soft-1.19.1/CMakeLists.txt.orig	2018-10-12 00:05:31.000000000 +0200
++++ openal-soft-1.19.1/CMakeLists.txt	2019-07-25 05:26:21.124715068 +0200
+@@ -1350,9 +1350,9 @@
+ # Needed for openal.pc.in
+ SET(prefix ${CMAKE_INSTALL_PREFIX})
+ SET(exec_prefix "\${prefix}")
+-SET(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+-SET(bindir "\${exec_prefix}/${CMAKE_INSTALL_BINDIR}")
+-SET(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
++SET(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
++SET(bindir "${CMAKE_INSTALL_FULL_BINDIR}")
++SET(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+ SET(PACKAGE_VERSION "${LIB_VERSION}")
+ SET(PKG_CONFIG_CFLAGS )
+ SET(PKG_CONFIG_PRIVATE_LIBS )

@@ -20,11 +20,12 @@ Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	1.19.1
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
 # Source0-md5:	af6f148c342276a51ea9c33ebd303f78
+Patch0:		%{name}-pc.patch
 URL:		http://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -94,6 +95,7 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 
 %prep
 %setup -q -n openal-soft-%{version}
+%patch0 -p1
 
 %build
 cd build

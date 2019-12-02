@@ -19,18 +19,19 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.19.1
-Release:	2
+Version:	1.20.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	af6f148c342276a51ea9c33ebd303f78
+# Source0-md5:	f6349071db03e48994ea09daa031ef6e
 Patch0:		%{name}-pc.patch
 URL:		http://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
+BuildRequires:	libstdc++-devel >= 6:4.8.1
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
@@ -134,7 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/openal
-%attr(755,root,root) %{_bindir}/makehrtf
+%attr(755,root,root) %{_bindir}/makemhr
 %attr(755,root,root) %{_bindir}/openal-info
 %attr(755,root,root) %{_libdir}/libopenal.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libopenal.so.1

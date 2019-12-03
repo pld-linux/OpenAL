@@ -31,6 +31,7 @@ URL:		http://www.openal.org/
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
+BuildRequires:	libmysofa-devel
 BuildRequires:	libstdc++-devel >= 6:4.8.1
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}

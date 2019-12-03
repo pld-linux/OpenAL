@@ -106,8 +106,8 @@ cd build
 	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
 	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF} \
 	%{?with_sdl:-DALSOFT_BACKEND_SDL2=ON} \
-	%{!?with_sse:-DALSOFT_ENABLE_SSE_CODEGEN=OFF} \
-	%{!?with_sse2:-DALSOFT_ENABLE_SSE2_CODEGEN=OFF} \
+	%{!?with_sse:-DALSOFT_CPUEXT_SSE=OFF} \
+	%{!?with_sse2:-DALSOFT_CPUEXT_SSE2=OFF} \
 	-DALSOFT_EXAMPLES=OFF \
 	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
 	%{?with_qt4:-DALSOFT_NO_QT5=ON} \

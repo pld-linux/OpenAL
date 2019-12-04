@@ -5,27 +5,23 @@
 %bcond_without	portaudio	# PortAudio backend
 %bcond_without	pulseaudio	# PulseAudio backend
 %bcond_with	sdl		# SDL2 backend
-%bcond_with	sse		# force use of SSE instructions (x86)
 %bcond_with	sse2		# force use of SSE2 instructions (x86)
 %bcond_without	gui		# alsoft-config GUI
 %bcond_with	qt4		# Qt 4 instead of Qt 5 for GUI
-#
-%ifarch pentium3 pentium4
-%define	with_sse	1
-%endif
-%ifarch pentium4
+%ifarch pentium4 x32 %{x8664}
 %define	with_sse2	1
 %endif
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
 Version:	1.20.0
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
 # Source0-md5:	f6349071db03e48994ea09daa031ef6e
 Patch0:		%{name}-pc.patch
+Patch1:		%{name}-nosse.patch
 URL:		http://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -49,6 +45,7 @@ BuildRequires:	Qt5Widgets-devel >= 5
 BuildRequires:	qt5-build >= 5
 %endif
 %endif
+%{?with_sse2:Requires:	cpuinfo(sse2)}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -98,6 +95,7 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 %prep
 %setup -q -n openal-soft-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 cd build
@@ -107,8 +105,7 @@ cd build
 	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
 	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF} \
 	%{?with_sdl:-DALSOFT_BACKEND_SDL2=ON} \
-	%{!?with_sse:-DALSOFT_CPUEXT_SSE=OFF} \
-	%{!?with_sse2:-DALSOFT_CPUEXT_SSE2=OFF} \
+	%{!?with_sse2:-DALSOFT_ENABLE_SSE2_CODEGEN=OFF} \
 	-DALSOFT_EXAMPLES=OFF \
 	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
 	%{?with_qt4:-DALSOFT_NO_QT5=ON} \

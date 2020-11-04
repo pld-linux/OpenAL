@@ -14,12 +14,12 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.20.1
-Release:	2
+Version:	1.21.0
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	556695068ce8375b89986083d810fd35
+# Source0-md5:	332dc0ead285887a3da5ec6bc725fdcd
 Patch0:		%{name}-pc.patch
 Patch1:		%{name}-nosse.patch
 URL:		http://www.openal.org/
@@ -28,7 +28,7 @@ URL:		http://www.openal.org/
 BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel
-BuildRequires:	libstdc++-devel >= 6:4.8.1
+BuildRequires:	libstdc++-devel >= 6:5
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
@@ -120,9 +120,6 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/openal
 	DESTDIR=$RPM_BUILD_ROOT
 
 install -p alsoftrc.sample $RPM_BUILD_ROOT%{_sysconfdir}/openal/alsoft.conf
-
-# these look not really useful
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/altonegen
 
 %clean
 rm -rf $RPM_BUILD_ROOT

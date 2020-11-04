@@ -27,8 +27,8 @@
      return _mm_cvttsd_si32(_mm_set_sd(d));
  
  #elif ((defined(__GNUC__) || defined(__clang__)) && (defined(__i386__) || defined(__x86_64__)) && \
---- openal-soft-1.20.0/alc/helpers.cpp.orig	2019-11-28 09:45:08.000000000 +0100
-+++ openal-soft-1.20.0/alc/helpers.cpp	2019-12-04 18:37:09.810067181 +0100
+--- openal-soft-1.20.0/alc/fpu_ctrl.cpp.orig	2019-11-28 09:45:08.000000000 +0100
++++ openal-soft-1.20.0/alc/fpu_ctrl.cpp	2019-12-04 18:37:09.810067181 +0100
 @@ -209,7 +209,7 @@
  
  FPUCtl::FPUCtl()

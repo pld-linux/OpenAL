@@ -47,3 +47,43 @@
      _mm_setcsr(this->sse_state);
  
  #elif defined(__GNUC__) && defined(HAVE_SSE)
+--- openal-soft-1.21.0/alc/effects/convolution.cpp.orig	2020-11-04 11:00:35.000000000 +0100
++++ openal-soft-1.21.0/alc/effects/convolution.cpp	2020-11-05 06:23:28.093700396 +0100
+@@ -1,7 +1,7 @@
+ 
+ #include "config.h"
+ 
+-#ifdef HAVE_SSE_INTRINSICS
++#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
+ #include <xmmintrin.h>
+ #endif
+ 
+@@ -108,7 +108,7 @@
+ 
+ void apply_fir(al::span<float> dst, const float *RESTRICT src, const float *RESTRICT filter)
+ {
+-#ifdef HAVE_SSE_INTRINSICS
++#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
+     for(float &output : dst)
+     {
+         __m128 r4{_mm_setzero_ps()};
+--- openal-soft-1.21.0/alc/uhjfilter.cpp.orig	2020-11-04 11:00:35.000000000 +0100
++++ openal-soft-1.21.0/alc/uhjfilter.cpp	2020-11-05 06:29:14.128492431 +0100
+@@ -3,7 +3,7 @@
+ 
+ #include "uhjfilter.h"
+ 
+-#ifdef HAVE_SSE_INTRINSICS
++#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
+ #include <xmmintrin.h>
+ #endif
+ 
+@@ -75,7 +75,7 @@
+ 
+ void allpass_process(al::span<float> dst, const float *RESTRICT src)
+ {
+-#ifdef HAVE_SSE_INTRINSICS
++#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
+     size_t pos{0};
+     if(size_t todo{dst.size()>>1})
+     {

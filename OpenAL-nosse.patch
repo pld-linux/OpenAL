@@ -27,12 +27,12 @@
      return _mm_cvttsd_si32(_mm_set_sd(d));
  
  #elif ((defined(__GNUC__) || defined(__clang__)) && (defined(__i386__) || defined(__x86_64__)) && \
---- openal-soft-1.20.0/alc/fpu_ctrl.cpp.orig	2019-11-28 09:45:08.000000000 +0100
-+++ openal-soft-1.20.0/alc/fpu_ctrl.cpp	2019-12-04 18:37:09.810067181 +0100
+--- openal-soft-1.20.0/core/fpu_ctrl.cpp.orig	2019-11-28 09:45:08.000000000 +0100
++++ openal-soft-1.20.0/core/fpu_ctrl.cpp	2019-12-04 18:37:09.810067181 +0100
 @@ -209,7 +209,7 @@
- 
- FPUCtl::FPUCtl()
  {
+     if(this->in_mode) return;
+ 
 -#if defined(HAVE_SSE_INTRINSICS)
 +#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE_MATH__)
      this->sse_state = _mm_getcsr();
@@ -67,8 +67,8 @@
      for(float &output : dst)
      {
          __m128 r4{_mm_setzero_ps()};
---- openal-soft-1.21.0/alc/uhjfilter.cpp.orig	2020-11-04 11:00:35.000000000 +0100
-+++ openal-soft-1.21.0/alc/uhjfilter.cpp	2020-11-05 06:29:14.128492431 +0100
+--- openal-soft-1.21.0/core/uhjfilter.cpp.orig	2020-11-04 11:00:35.000000000 +0100
++++ openal-soft-1.21.0/core/uhjfilter.cpp	2020-11-05 06:29:14.128492431 +0100
 @@ -3,7 +3,7 @@
  
  #include "uhjfilter.h"

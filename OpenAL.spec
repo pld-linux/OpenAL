@@ -8,6 +8,7 @@
 %bcond_with	sse2		# force use of SSE2 instructions (x86)
 %bcond_without	gui		# alsoft-config GUI
 %bcond_with	qt4		# Qt 4 instead of Qt 5 for GUI
+
 %ifarch pentium4 x32 %{x8664}
 %define	with_sse2	1
 %endif
@@ -18,7 +19,7 @@ Version:	1.21.1
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
+Source0:	https://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
 # Source0-md5:	a936806ebd8de417b0ffd8cf3f48f456
 Patch0:		%{name}-pc.patch
 Patch1:		%{name}-nosse.patch

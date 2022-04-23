@@ -2,8 +2,10 @@
 # Conditional build:
 %bcond_without	alsa		# ALSA backend
 %bcond_without	jack		# JACK backend
+%bcond_without	pipewire	# PipeWire backend
 %bcond_without	portaudio	# PortAudio backend
 %bcond_without	pulseaudio	# PulseAudio backend
+%bcond_without	rtkit		# RTKit support
 %bcond_with	sdl		# SDL2 backend
 %bcond_with	sse2		# force use of SSE2 instructions (x86)
 %bcond_without	gui		# alsoft-config GUI
@@ -15,25 +17,27 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.21.1
+Version:	1.22.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	a936806ebd8de417b0ffd8cf3f48f456
+# Source0-md5:	40e5b29a241e1e320b5b16ed8f912257
 Patch0:		%{name}-pc.patch
 Patch1:		%{name}-nosse.patch
 URL:		http://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
 BuildRequires:	cmake >= 3.0.2
+%{?with_rtkit:BuildRequires:	dbus-devel}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel
 BuildRequires:	libstdc++-devel >= 6:5
+%{?with_pipewire:BuildRequires:	pipewire-devel >= 0.3}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
-BuildRequires:	rpmbuild(macros) >= 1.605
+BuildRequires:	rpmbuild(macros) >= 1.742
 %if %{with gui}
 %if %{with qt4}
 BuildRequires:	QtCore-devel >= 4.8.0
@@ -103,8 +107,10 @@ cd build
 %cmake .. \
 	%{!?with_alsa:-DALSOFT_BACKEND_ALSA=OFF} \
 	%{!?with_jack:-DALSOFT_BACKEND_JACK=OFF} \
+	%{cmake_on_off pipewire ALSOFT_BACKEND_PIPEWIRE} \
 	%{!?with_portaudio:-DALSOFT_BACKEND_PORTAUDIO=OFF} \
 	%{!?with_pulseaudio:-DALSOFT_BACKEND_PULSEAUDIO=OFF} \
+	%{cmake_on_off rtkit ALSOFT_RTKIT} \
 	%{?with_sdl:-DALSOFT_BACKEND_SDL2=ON} \
 	%{!?with_sse2:-DALSOFT_ENABLE_SSE2_CODEGEN=OFF} \
 	-DALSOFT_EXAMPLES=OFF \

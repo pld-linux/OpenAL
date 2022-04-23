@@ -17,7 +17,7 @@
 +#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE_MATH__)
      return _mm_cvtt_ss2si(_mm_set_ss(f));
  
- #elif ((defined(__GNUC__) || defined(__clang__)) && (defined(__i386__) || defined(__x86_64__)) && \
+ #elif (defined(_MSC_VER) && defined(_M_IX86_FP) && _M_IX86_FP == 0) \
 @@ -257,7 +257,7 @@
  /** Converts double-to-int using standard behavior (truncation). */
  inline int double2int(double d) noexcept
@@ -26,7 +26,7 @@
 +#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE_MATH__)
      return _mm_cvttsd_si32(_mm_set_sd(d));
  
- #elif ((defined(__GNUC__) || defined(__clang__)) && (defined(__i386__) || defined(__x86_64__)) && \
+ #elif (defined(_MSC_VER) && defined(_M_IX86_FP) && _M_IX86_FP < 2) \
 --- openal-soft-1.20.0/core/fpu_ctrl.cpp.orig	2019-11-28 09:45:08.000000000 +0100
 +++ openal-soft-1.20.0/core/fpu_ctrl.cpp	2019-12-04 18:37:09.810067181 +0100
 @@ -209,7 +209,7 @@
@@ -36,8 +36,8 @@
 -#if defined(HAVE_SSE_INTRINSICS)
 +#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE_MATH__)
      this->sse_state = _mm_getcsr();
-     unsigned int sseState = this->sse_state;
-     sseState |= 0x8000; /* set flush-to-zero */
+     unsigned int sseState{this->sse_state};
+     sseState &= ~(_MM_FLUSH_ZERO_MASK | _MM_DENORMALS_ZERO_MASK);
 @@ -236,7 +236,7 @@
  {
      if(!this->in_mode) return;
@@ -50,14 +50,14 @@
 --- openal-soft-1.21.0/alc/effects/convolution.cpp.orig	2020-11-04 11:00:35.000000000 +0100
 +++ openal-soft-1.21.0/alc/effects/convolution.cpp	2020-11-05 06:23:28.093700396 +0100
 @@ -1,7 +1,7 @@
- 
- #include "config.h"
+ #include <stdint.h>
+ #include <utility>
  
 -#ifdef HAVE_SSE_INTRINSICS
 +#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
  #include <xmmintrin.h>
- #endif
- 
+ #elif defined(HAVE_NEON)
+ #include <arm_neon.h>
 @@ -108,7 +108,7 @@
  
  void apply_fir(al::span<float> dst, const float *RESTRICT src, const float *RESTRICT filter)
@@ -67,23 +67,32 @@
      for(float &output : dst)
      {
          __m128 r4{_mm_setzero_ps()};
---- openal-soft-1.21.0/core/uhjfilter.cpp.orig	2020-11-04 11:00:35.000000000 +0100
-+++ openal-soft-1.21.0/core/uhjfilter.cpp	2020-11-05 06:29:14.128492431 +0100
-@@ -3,7 +3,7 @@
- 
- #include "uhjfilter.h"
+--- openal-soft-1.22.0/common/phase_shifter.h.orig	2022-04-23 03:46:14.000000000 +0200
++++ openal-soft-1.22.0/common/phase_shifter.h	2022-04-23 12:16:39.561832386 +0200
+@@ -1,7 +1,7 @@
+ #ifndef PHASE_SHIFTER_H
+ #define PHASE_SHIFTER_H
  
 -#ifdef HAVE_SSE_INTRINSICS
-+#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
++#ifdef HAVE_SSE_INTRINSICS && defined(__SSE__)
  #include <xmmintrin.h>
- #endif
- 
-@@ -75,7 +75,7 @@
- 
- void allpass_process(al::span<float> dst, const float *RESTRICT src)
+ #elif defined(HAVE_NEON)
+ #include <arm_neon.h>
+@@ -116,7 +116,7 @@
+ template<size_t S>
+ inline void PhaseShifterT<S>::process(al::span<float> dst, const float *RESTRICT src) const
  {
 -#ifdef HAVE_SSE_INTRINSICS
-+#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
-     size_t pos{0};
++#ifdef HAVE_SSE_INTRINSICS && defined(__SSE__)
      if(size_t todo{dst.size()>>1})
      {
+         auto *out = reinterpret_cast<__m64*>(dst.data());
+@@ -215,7 +215,7 @@
+ template<size_t S>
+ inline void PhaseShifterT<S>::processAccum(al::span<float> dst, const float *RESTRICT src) const
+ {
+-#ifdef HAVE_SSE_INTRINSICS
++#ifdef HAVE_SSE_INTRINSICS && defined(__SSE__)
+     if(size_t todo{dst.size()>>1})
+     {
+         auto *out = reinterpret_cast<__m64*>(dst.data());

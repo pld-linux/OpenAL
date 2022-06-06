@@ -88,8 +88,14 @@ Summary:	OpenAL configuration GUI
 Summary(pl.UTF-8):	Graficzny interfejs do konfiguracji biblioteki OpenAL
 Group:		X11/Applications/Sound
 Requires:	%{name} = %{version}-%{release}
+%if %{with qt4}
 Requires:	QtCore >= 4.8.0
 Requires:	QtGui >= 4.8.0
+%else
+Requires:	Qt5Core >= 5
+Requires:	Qt5Gui >= 5
+Requires:	Qt5Widgets >= 5
+%endif
 
 %description gui
 OpenAL configuration GUI.

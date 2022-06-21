@@ -17,14 +17,13 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.22.0
-Release:	2
+Version:	1.22.1
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	40e5b29a241e1e320b5b16ed8f912257
-Patch0:		%{name}-pc.patch
-Patch1:		%{name}-nosse.patch
+# Source0-md5:	fc745c9cd8b12e4f1702ca3c2ddfe813
+Patch0:		%{name}-nosse.patch
 URL:		http://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
@@ -33,7 +32,7 @@ BuildRequires:	cmake >= 3.0.2
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel
 BuildRequires:	libstdc++-devel >= 6:5
-%{?with_pipewire:BuildRequires:	pipewire-devel >= 0.3}
+%{?with_pipewire:BuildRequires:	pipewire-devel >= 0.3.23}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
@@ -106,7 +105,6 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 %prep
 %setup -q -n openal-soft-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %build
 cd build

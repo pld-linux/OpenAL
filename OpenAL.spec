@@ -9,7 +9,6 @@
 %bcond_with	sdl		# SDL2 backend
 %bcond_with	sse2		# force use of SSE2 instructions (x86)
 %bcond_without	gui		# alsoft-config GUI
-%bcond_with	qt4		# Qt 4 instead of Qt 5 for GUI
 
 %ifarch pentium4 x32 %{x8664}
 %define	with_sse2	1
@@ -38,16 +37,10 @@ BuildRequires:	pkgconfig
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 BuildRequires:	rpmbuild(macros) >= 1.742
 %if %{with gui}
-%if %{with qt4}
-BuildRequires:	QtCore-devel >= 4.8.0
-BuildRequires:	QtGui-devel >= 4.8.0
-BuildRequires:	qt4-build >= 4.8.0
-%else
 BuildRequires:	Qt5Core-devel >= 5
 BuildRequires:	Qt5Gui-devel >= 5
 BuildRequires:	Qt5Widgets-devel >= 5
 BuildRequires:	qt5-build >= 5
-%endif
 %endif
 %{?with_sse2:Requires:	cpuinfo(sse2)}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -87,14 +80,9 @@ Summary:	OpenAL configuration GUI
 Summary(pl.UTF-8):	Graficzny interfejs do konfiguracji biblioteki OpenAL
 Group:		X11/Applications/Sound
 Requires:	%{name} = %{version}-%{release}
-%if %{with qt4}
-Requires:	QtCore >= 4.8.0
-Requires:	QtGui >= 4.8.0
-%else
 Requires:	Qt5Core >= 5
 Requires:	Qt5Gui >= 5
 Requires:	Qt5Widgets >= 5
-%endif
 
 %description gui
 OpenAL configuration GUI.
@@ -119,7 +107,6 @@ cd build
 	%{!?with_sse2:-DALSOFT_ENABLE_SSE2_CODEGEN=OFF} \
 	-DALSOFT_EXAMPLES=OFF \
 	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
-	%{?with_qt4:-DALSOFT_NO_QT5=ON} \
 
 %{__make}
 

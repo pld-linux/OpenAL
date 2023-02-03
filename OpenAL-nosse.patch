@@ -87,12 +87,3 @@
      if(size_t todo{dst.size()>>1})
      {
          auto *out = reinterpret_cast<__m64*>(dst.data());
-@@ -215,7 +215,7 @@
- template<size_t S>
- inline void PhaseShifterT<S>::processAccum(al::span<float> dst, const float *RESTRICT src) const
- {
--#ifdef HAVE_SSE_INTRINSICS
-+#if defined(HAVE_SSE_INTRINSICS) && defined(__SSE__)
-     if(size_t todo{dst.size()>>1})
-     {
-         auto *out = reinterpret_cast<__m64*>(dst.data());

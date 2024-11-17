@@ -26,7 +26,7 @@ Patch0:		%{name}-nosse.patch
 URL:		https://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
 %{?with_alsa:BuildRequires:	alsa-lib-devel}
-BuildRequires:	cmake >= 3.0.2
+BuildRequires:	cmake >= 3.13
 %{?with_rtkit:BuildRequires:	dbus-devel}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel

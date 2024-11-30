@@ -16,12 +16,12 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.24.0
+Version:	1.24.1
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	f2b5d15fd4bf24296022f8eafe31530c
+# Source0-md5:	21ab0cb013229b3145db8a6b0b8062ad
 Patch0:		%{name}-nosse.patch
 URL:		https://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
@@ -96,8 +96,7 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 %patch0 -p1
 
 %build
-cd build
-%cmake .. \
+%cmake -B build \
 	%{!?with_alsa:-DALSOFT_BACKEND_ALSA=OFF} \
 	%{!?with_jack:-DALSOFT_BACKEND_JACK=OFF} \
 	%{cmake_on_off pipewire ALSOFT_BACKEND_PIPEWIRE} \
@@ -109,7 +108,7 @@ cd build
 	-DALSOFT_EXAMPLES=OFF \
 	%{!?with_gui:-DALSOFT_NO_CONFIG_UTIL=ON} \
 
-%{__make}
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT

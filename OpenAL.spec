@@ -93,7 +93,7 @@ Graficzny interfejs do konfiguracji biblioteki OpenAL.
 
 %prep
 %setup -q -n openal-soft-%{version}
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 %cmake -B build \

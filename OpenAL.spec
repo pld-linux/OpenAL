@@ -30,8 +30,8 @@ BuildRequires:	cmake >= 3.13
 %{?with_rtkit:BuildRequires:	dbus-devel}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel
-# C++20
-BuildRequires:	libstdc++-devel >= 6:8
+# C++20 with std::format
+BuildRequires:	libstdc++-devel >= 6:13
 %{?with_pipewire:BuildRequires:	pipewire-devel >= 0.3.23}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}

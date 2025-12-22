@@ -16,12 +16,12 @@
 Summary:	Open Audio Library
 Summary(pl.UTF-8):	Otwarta Biblioteka Dźwięku
 Name:		OpenAL
-Version:	1.24.3
+Version:	1.25.0
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://openal-soft.org/openal-releases/openal-soft-%{version}.tar.bz2
-# Source0-md5:	d873c5c062b7e2f883e0deae954fdd77
+# Source0-md5:	606a0a132f00d5a90799246fe3de5947
 Patch0:		%{name}-nosse.patch
 URL:		https://www.openal.org/
 %{?with_sdl:BuildRequires:	SDL2-devel >= 2}
@@ -30,18 +30,18 @@ BuildRequires:	cmake >= 3.13
 %{?with_rtkit:BuildRequires:	dbus-devel}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	libmysofa-devel
-# C++17
-BuildRequires:	libstdc++-devel >= 6:7
+# C++20
+BuildRequires:	libstdc++-devel >= 6:8
 %{?with_pipewire:BuildRequires:	pipewire-devel >= 0.3.23}
 BuildRequires:	pkgconfig
 %{?with_portaudio:BuildRequires:	portaudio-devel}
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 BuildRequires:	rpmbuild(macros) >= 1.742
 %if %{with gui}
-BuildRequires:	Qt5Core-devel >= 5
-BuildRequires:	Qt5Gui-devel >= 5
-BuildRequires:	Qt5Widgets-devel >= 5
-BuildRequires:	qt5-build >= 5
+BuildRequires:	Qt6Core-devel >= 6
+BuildRequires:	Qt6Gui-devel >= 6
+BuildRequires:	Qt6Widgets-devel >= 6
+BuildRequires:	qt6-build >= 6
 %endif
 %{?with_sse2:Requires:	cpuinfo(sse2)}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -81,9 +81,9 @@ Summary:	OpenAL configuration GUI
 Summary(pl.UTF-8):	Graficzny interfejs do konfiguracji biblioteki OpenAL
 Group:		X11/Applications/Sound
 Requires:	%{name} = %{version}-%{release}
-Requires:	Qt5Core >= 5
-Requires:	Qt5Gui >= 5
-Requires:	Qt5Widgets >= 5
+Requires:	Qt6Core >= 6
+Requires:	Qt6Gui >= 6
+Requires:	Qt6Widgets >= 6
 
 %description gui
 OpenAL configuration GUI.

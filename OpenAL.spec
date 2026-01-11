@@ -67,7 +67,7 @@ dostarczycieli sprzętu i programistów.
 Summary:	Headers for OpenAL
 Summary(pl.UTF-8):	Pliki nagłówkowe do OpenAL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Header files for OpenAL-based programs.
@@ -80,10 +80,10 @@ OpenAL.
 Summary:	OpenAL configuration GUI
 Summary(pl.UTF-8):	Graficzny interfejs do konfiguracji biblioteki OpenAL
 Group:		X11/Applications/Sound
-Requires:	%{name} = %{version}-%{release}
-Requires:	Qt6Core >= 6
-Requires:	Qt6Gui >= 6
-Requires:	Qt6Widgets >= 6
+Requires:	%{name}%{?_isa} = %{version}-%{release}
+Requires:	Qt6Core%{?_isa} >= 6
+Requires:	Qt6Gui%{?_isa} >= 6
+Requires:	Qt6Widgets%{?_isa} >= 6
 
 %description gui
 OpenAL configuration GUI.

@@ -1,8 +1,8 @@
 --- openal-soft-1.24.0/common/alnumeric.h.orig	2024-11-17 20:15:56.243784583 +0100
 +++ openal-soft-1.24.0/common/alnumeric.h	2024-11-17 20:19:52.912502438 +0100
 @@ -163,7 +163,7 @@ constexpr auto RoundFromZero(T value, st
- [[nodiscard]]
- inline auto fastf2i(f32 const f) noexcept -> i32
+ [[nodiscard]] inline
+ auto fastf2i(float const f) noexcept -> int
  {
 -#if HAVE_SSE_INTRINSICS
 +#if HAVE_SSE_INTRINSICS && defined(__SSE_MATH__)
@@ -15,8 +15,8 @@
  [[maybe_unused]]
  auto disable_denormals() -> unsigned int
  {
--#if HAVE_SSE_INTRINSICS
-+#if HAVE_SSE_INTRINSICS && defined(__SSE_MATH__)
+-#if HAVE_SSE_INTRINSICS && !defined(__powerpc64__)
++#if HAVE_SSE_INTRINSICS && !defined(__powerpc64__) && defined(__SSE_MATH__)
      const auto state = _mm_getcsr();
      auto sseState = state;
      sseState &= ~(_MM_FLUSH_ZERO_MASK | _MM_DENORMALS_ZERO_MASK);
@@ -24,8 +24,8 @@
      _mm_setcsr(sseState);
      return state;
  
--#elif HAVE_SSE
-+#elif HAVE_SSE && defined(__SSE_MATH__)
+-#elif HAVE_SSE && !defined(__powerpc64__)
++#elif HAVE_SSE && !defined(__powerpc64__) && defined(__SSE_MATH__)
  
      const auto state = _mm_getcsr();
      auto sseState = state;
@@ -33,48 +33,48 @@
  [[maybe_unused]]
  void reset_fpu(unsigned int state [[maybe_unused]])
  {
--#if HAVE_SSE_INTRINSICS || HAVE_SSE
-+#if (HAVE_SSE_INTRINSICS || HAVE_SSE) && defined(__SSE_MATH__)
+-#if (HAVE_SSE_INTRINSICS || HAVE_SSE) && !defined(__powerpc64__)
++#if (HAVE_SSE_INTRINSICS || HAVE_SSE) && !defined(__powerpc64__) && defined(__SSE_MATH__)
      _mm_setcsr(state);
  #endif
  }
 --- openal-soft-1.24.0/alc/effects/convolution.cpp.orig	2024-11-17 20:31:41.705329245 +0100
 +++ openal-soft-1.24.0/alc/effects/convolution.cpp	2024-11-17 20:35:48.037328083 +0100
 @@ -13,7 +13,7 @@
- #include <span>
- #include <vector>
  
--#if HAVE_SSE_INTRINSICS
-+#if HAVE_SSE_INTRINSICS && defined(__SSE__)
- #include <xmmintrin.h>
- #elif HAVE_NEON
+ #if HAVE_NEON
  #include <arm_neon.h>
+-#elif HAVE_SSE_INTRINSICS
++#elif HAVE_SSE_INTRINSICS && defined(__SSE__)
+ #include <xmmintrin.h>
+ #endif
+ 
 @@ -157,7 +157,7 @@ constexpr size_t ConvolveUpdateSamples{C
- void apply_fir(std::span<float> dst, std::span<const float> input,
-     const std::span<const float,ConvolveUpdateSamples> filter)
- {
--#if HAVE_SSE_INTRINSICS
-+#if HAVE_SSE_INTRINSICS && defined(__SSE__)
+         return vget_lane_f32(vadd_f32(vget_low_f32(r4), vget_high_f32(r4)), 0);
+     });
+ 
+-#elif HAVE_SSE_INTRINSICS
++#elif HAVE_SSE_INTRINSICS && defined(__SSE__)
+ 
      std::ranges::generate(dst, [&input,filter]
      {
-         auto r4 = _mm_setzero_ps();
---- openal-soft-1.24.0/common/phase_shifter.h.orig	2024-11-17 20:36:07.740554675 +0100
-+++ openal-soft-1.24.0/common/phase_shifter.h	2024-11-17 20:37:05.583574646 +0100
+--- openal-soft-1.24.0/common/phase_shifter.hpp.orig	2024-11-17 20:36:07.740554675 +0100
++++ openal-soft-1.24.0/common/phase_shifter.hpp	2024-11-17 20:37:05.583574646 +0100
 @@ -3,7 +3,7 @@
  
- #include "config_simd.h"
- 
--#if HAVE_SSE_INTRINSICS
-+#if HAVE_SSE_INTRINSICS && defined(__SSE__)
- #include <xmmintrin.h>
- #elif HAVE_NEON
+ #if HAVE_NEON
  #include <arm_neon.h>
-@@ -80,7 +80,7 @@ public:
+-#elif HAVE_SSE_INTRINSICS
++#elif HAVE_SSE_INTRINSICS && defined(__SSE__)
+ #include <xmmintrin.h>
+ #endif
  
-     NOINLINE void process(const std::span<float> dst, std::span<const float> src) const
-     {
--#if HAVE_SSE_INTRINSICS
-+#if HAVE_SSE_INTRINSICS && defined(__SSE__)
+@@ -80,7 +80,7 @@ public:
+         }
+         /* NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast) */
+ 
+-#elif HAVE_SSE_INTRINSICS
++#elif HAVE_SSE_INTRINSICS && defined(__SSE__)
+ 
          /* NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
           * Need to be able to cast floats to SIMD float types.
-          */
